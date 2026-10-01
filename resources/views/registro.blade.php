@@ -4,125 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registro</title>
-    <style>
-        :root {
-            --principal:  #FF6A3B;
-            --secundario: #E6E1DA;
-            --destacado:  #111827;
-            --alerta:     #E53E3E;
-            --texto:      #1F2937;
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--secundario);
-            background-image: linear-gradient(rgba(230, 225, 218, 0.35), rgba(230, 225, 218, 0.35)), url('{{ asset('images/imagenFondoRegistro.png') }}');
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            font-family: Arial, sans-serif;
-            color: var(--texto);
-        }
-
-        .card {
-            background: #fff;
-            width: 100%;
-            max-width: 400px;
-            padding: 32px;
-            border-radius: 12px;
-            border-top: 6px solid var(--principal);
-            box-shadow: 0 4px 20px rgba(17, 24, 39, 0.1);
-        }
-
-        h1 {
-            margin: 0 0 4px;
-            color: var(--destacado);
-        }
-
-        .logo {
-            display: block;
-            width: 220px;
-            max-width: 100%;
-            height: auto;
-            margin: 0 auto 24px;
-        }
-
-        .subtitulo { margin: 0 0 24px; font-size: 14px; }
-
-        label {
-            display: block;
-            margin: 16px 0 6px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--secundario);
-            border-radius: 8px;
-            font-size: 15px;
-            color: var(--texto);
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--principal);
-        }
-
-        .error {
-            color: var(--alerta);
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        button {
-            width: 100%;
-            margin-top: 24px;
-            padding: 12px;
-            background: var(--principal);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover { opacity: 0.9; }
-    </style>
+    @vite('resources/css/app.css')
 </head>
-<body>
-    <div class="card">
-        <img src="{{ asset('images/logoPrincipal.png') }}" alt="Logo de mi aplicación" class="logo">
-        <h1>Crear cuenta</h1>
-        <p class="subtitulo">Empieza a organizar tus tareas</p>
+<body class="flex min-h-screen items-center justify-center bg-[#E6E1DA] bg-[url('/images/imagenFondoRegistro.png')] bg-cover bg-center bg-no-repeat p-4 font-sans text-[#1F2937]">
+    <div class="w-full max-w-md rounded-xl border-t-[6px] border-[#FF6A3B] bg-white p-8 shadow-[0_4px_20px_rgba(17,24,39,0.1)]">
+        <img src="{{ asset('images/logoPrincipal.png') }}" alt="Logo de mi aplicación" class="mx-auto mb-6 block h-auto w-[220px] max-w-full">
+        <h1 class="mb-1 text-2xl font-bold text-[#111827]">Crear cuenta</h1>
+        <p class="mb-6 text-sm">Empieza a organizar tus tareas</p>
 
         <form>
             @csrf
 
-            <label for="name">Nombre</label>
-            <input type="text" id="name" name="name" value="{{ old('name') }}">
-            @error('name') <div class="error">{{ $message }}</div> @enderror
+            <label for="name" class="mb-1 mt-4 block text-sm font-bold">Nombre</label>
+            <input type="text" id="name" name="name" value="{{ old('name') }}" class="w-full rounded-lg border border-[#E6E1DA] px-3 py-2.5 text-[15px] text-[#1F2937] outline-none focus:border-[#FF6A3B]">
+            @error('name') <div class="mt-1 text-[13px] text-[#E53E3E]">{{ $message }}</div> @enderror
 
-            <label for="email">Correo electrónico</label>
-            <input type="email" id="email" name="email" value="{{ old('email') }}">
-            @error('email') <div class="error">{{ $message }}</div> @enderror
+            <label for="email" class="mb-1 mt-4 block text-sm font-bold">Correo electrónico</label>
+            <input type="email" id="email" name="email" value="{{ old('email') }}" class="w-full rounded-lg border border-[#E6E1DA] px-3 py-2.5 text-[15px] text-[#1F2937] outline-none focus:border-[#FF6A3B]">
+            @error('email') <div class="mt-1 text-[13px] text-[#E53E3E]">{{ $message }}</div> @enderror
 
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password">
-            @error('password') <div class="error">{{ $message }}</div> @enderror
+            <label for="password" class="mb-1 mt-4 block text-sm font-bold">Contraseña</label>
+            <input type="password" id="password" name="password" class="w-full rounded-lg border border-[#E6E1DA] px-3 py-2.5 text-[15px] text-[#1F2937] outline-none focus:border-[#FF6A3B]">
+            @error('password') <div class="mt-1 text-[13px] text-[#E53E3E]">{{ $message }}</div> @enderror
 
-            <label for="password_confirmation">Repetir contraseña</label>
-            <input type="password" id="password_confirmation" name="password_confirmation">
+            <label for="password_confirmation" class="mb-1 mt-4 block text-sm font-bold">Repetir contraseña</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" class="w-full rounded-lg border border-[#E6E1DA] px-3 py-2.5 text-[15px] text-[#1F2937] outline-none focus:border-[#FF6A3B]">
 
-            <button type="submit">Registrarme</button>
+            <button type="submit" class="mt-6 w-full rounded-lg bg-[#FF6A3B] px-3 py-3 text-base font-bold text-white transition-opacity hover:opacity-90">Registrarme</button>
         </form>
     </div>
 </body>
