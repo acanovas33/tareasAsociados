@@ -24,7 +24,7 @@ test('la pagina de proyectos muestra el nombre, el rol y el progreso de cada pro
         ->assertSee('Proyecto de prueba')
         ->assertSee('Administrador')
         ->assertSee('25%')
-        ->assertSee('1 de 4 tareas hechas');
+        ->assertSeeHtml('<span class="font-mono">1</span> de <span class="font-mono">4</span> tareas hechas');
 });
 
 test('la pagina de proyectos muestra un mensaje cuando no hay proyectos', function () {
@@ -46,5 +46,5 @@ test('un proyecto sin tareas muestra el progreso a cero', function () {
         'tareas_hechas' => 0,
     ]]])
         ->assertSee('0%')
-        ->assertSee('0 de 0 tareas hechas');
+        ->assertSeeHtml('<span class="font-mono">0</span> de <span class="font-mono">0</span> tareas hechas');
 });

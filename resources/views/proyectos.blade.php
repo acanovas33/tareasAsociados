@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mis proyectos</title>
+    @fonts
     @vite('resources/css/app.css')
 </head>
 <body class="relative min-h-screen overflow-x-hidden bg-[#1E293B] bg-[url('/images/imagenFondoRegistro.png')] bg-cover bg-fixed bg-center bg-no-repeat p-4 font-sans text-[#334155] sm:p-6">
@@ -16,7 +17,7 @@
                 <div>
                     <img src="{{ asset('images/logoPrincipal.png') }}" alt="Logo de mi aplicación" class="mb-6 block h-auto w-[150px] max-w-full">
                     <p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#FF6A3B]">Tu espacio</p>
-                    <h1 class="text-3xl font-bold tracking-tight text-[#0F172A]">Mis proyectos</h1>
+                    <h1 class="font-display text-3xl font-bold tracking-tight text-[#0F172A]">Mis proyectos</h1>
                     <p class="mt-2 text-sm leading-6 text-[#64748B]">Aquí están todos los proyectos en los que colaboras.</p>
                 </div>
 
@@ -34,18 +35,18 @@
                         <div class="h-1.5 bg-gradient-to-r from-[#FF6A3B] via-[#FF8A5B] to-[#FFB088]"></div>
                         <div class="flex flex-1 flex-col p-6">
                             <p class="mb-3 text-xs font-bold uppercase tracking-[0.2em] {{ $proyecto['rol'] === 'Administrador' ? 'text-[#FF6A3B]' : 'text-[#64748B]' }}">{{ $proyecto['rol'] }}</p>
-                            <h2 class="text-xl font-bold tracking-tight text-[#0F172A]">{{ $proyecto['nombre'] }}</h2>
+                            <h2 class="font-display text-xl font-bold tracking-tight text-[#0F172A]">{{ $proyecto['nombre'] }}</h2>
                             <p class="mt-2 flex-1 text-sm leading-6 text-[#64748B]">{{ $proyecto['descripcion'] }}</p>
 
                             <div class="mt-6">
                                 <div class="mb-1.5 flex items-center justify-between text-sm font-semibold text-[#334155]">
                                     <span>Progreso</span>
-                                    <span>{{ $porcentaje }}%</span>
+                                    <span class="font-mono">{{ $porcentaje }}%</span>
                                 </div>
                                 <div class="h-2 overflow-hidden rounded-full bg-[#E2E8F0]" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de {{ $proyecto['nombre'] }}">
                                     <div class="h-full rounded-full bg-gradient-to-r from-[#FF6A3B] to-[#FFB088]" style="width: {{ $porcentaje }}%"></div>
                                 </div>
-                                <p class="mt-3 text-[13px] text-[#64748B]">{{ $proyecto['tareas_hechas'] }} de {{ $proyecto['tareas_totales'] }} tareas hechas · {{ $proyecto['miembros'] }} miembros</p>
+                                <p class="mt-3 text-[13px] text-[#64748B]"><span class="font-mono">{{ $proyecto['tareas_hechas'] }}</span> de <span class="font-mono">{{ $proyecto['tareas_totales'] }}</span> tareas hechas · <span class="font-mono">{{ $proyecto['miembros'] }}</span> miembros</p>
                             </div>
                         </div>
                     </article>
@@ -55,7 +56,7 @@
             <div class="overflow-hidden rounded-2xl border border-white/60 bg-white/95 text-center shadow-[0_24px_70px_rgba(15,23,42,0.3)] backdrop-blur-sm">
                 <div class="h-1.5 bg-gradient-to-r from-[#FF6A3B] via-[#FF8A5B] to-[#FFB088]"></div>
                 <div class="p-9">
-                    <h2 class="text-xl font-bold tracking-tight text-[#0F172A]">Todavía no tienes proyectos</h2>
+                    <h2 class="font-display text-xl font-bold tracking-tight text-[#0F172A]">Todavía no tienes proyectos</h2>
                     <p class="mt-2 text-sm leading-6 text-[#64748B]">Crea tu primer proyecto para empezar a organizar tus tareas.</p>
                 </div>
             </div>
