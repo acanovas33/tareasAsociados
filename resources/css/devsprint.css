@@ -108,6 +108,11 @@
         @apply rounded-xl bg-principal px-6 py-3.5 text-base font-bold text-white shadow-[0_8px_20px_rgba(255,106,59,0.25)] transition duration-200 hover:-translate-y-0.5 hover:bg-principal-oscuro hover:shadow-[0_12px_24px_rgba(255,106,59,0.3)] focus:outline-none focus:ring-4 focus:ring-principal/25 active:translate-y-0;
     }
 
+    /* Nombre de clase o fragmento de código dentro de un texto (guía de estilos, documentación) */
+    .codigo {
+        @apply rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-xs text-slate-700;
+    }
+
     /* Barra de progreso: <div class="progreso" role="progressbar" ...><div class="progreso-barra" style="width: 40%"></div></div> */
     .progreso {
         @apply h-2 overflow-hidden rounded-full bg-slate-200;

@@ -20,6 +20,8 @@ Esta carpeta es el **contexto compartido** de todos los agentes de IA del equipo
 ## El sistema de diseño, en una línea
 `resources/css/devsprint.css` contiene **todos** los colores, fuentes y componentes. Las vistas **no** llevan `<style>`, ni colores hexadecimales sueltos, ni cadenas largas de utilidades copiadas de otra vista: usan los tokens (`bg-principal`, `text-texto`, `font-display`…) y las clases de componente (`.tarjeta`, `.campo`, `.boton-principal`…).
 
+**Ver todos los componentes en pantalla:** ruta `/guia-estilos` (solo en local).
+
 ## Reglas de oro (valen para todos los agentes)
 1. **Diseño = manual de identidad.** Colores, tipografías y logotipo salen de `01-identidad-y-marca.md`. No inventes colores ni fuentes.
 2. **Usa lo que ya existe.** Antes de escribir estilos, busca la clase en `devsprint.css` / `03-componentes.md`. Si falta una pieza reutilizable, **añádela a `devsprint.css` y documéntala aquí** en el mismo commit; no la dejes en la vista.

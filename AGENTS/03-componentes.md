@@ -2,6 +2,8 @@
 
 Catálogo de las clases de `resources/css/devsprint.css` con fragmentos de Blade listos para copiar. **Si una pieza no está aquí ni en el CSS y se va a repetir, créala en `devsprint.css`, documéntala en este archivo y úsala desde la vista.**
 
+> **Verlos en pantalla:** con la aplicación en local, abre **`/guia-estilos`** (`php artisan serve` → http://127.0.0.1:8000/guia-estilos). Muestra todos estos componentes funcionando. Solo está disponible en entorno local. Al añadir un componente, añádelo también a `resources/views/guia-estilos.blade.php`.
+
 ## Plantilla base de una vista
 ```blade
 <!DOCTYPE html>
@@ -38,6 +40,7 @@ Referencia viva: `resources/views/proyectos.blade.php`. `[PENDENT]` extraer un l
 | `.campo` | `<input>` de texto, correo, contraseña… | Foco naranja |
 | `.campo-error` | Mensaje de error de campo (rojo) | |
 | `.boton-principal` | Botón naranja de acción | Añadir `w-full` o `w-full sm:w-auto` |
+| `.codigo` | Nombre de clase o código dentro de un texto | Solo guía de estilos y documentación en pantalla |
 | `.progreso` + `.progreso-barra` | Barra de progreso | Ancho de la barra con `style="width: N%"` (valor dinámico) |
 
 ## Tarjeta de cabecera de página
