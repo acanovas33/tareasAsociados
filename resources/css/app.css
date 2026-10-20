@@ -1,13 +1,5 @@
 @import 'tailwindcss';
+@import './devsprint.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
-
-@theme {
-    /* Manual d'identitat corporativa: Plus Jakarta Sans (secundària: text i formularis),
-       Inter (primària: títols) i JetBrains Mono (terciària: dates, comptadors i hores) */
-    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}

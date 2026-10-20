@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 class ProyectosController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         // Datos de ejemplo hasta que exista la base de datos (tarea "BD: Creación de la base de datos").
         // Cuando esté lista, sustituir por los proyectos del usuario que ha iniciado sesión.

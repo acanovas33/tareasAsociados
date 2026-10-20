@@ -1,0 +1,119 @@
+/*
+|--------------------------------------------------------------------------
+| DevSprint · sistema de diseño
+|--------------------------------------------------------------------------
+|
+| Fuente de verdad visual de la aplicación, basada en el Manual d'identitat
+| corporativa. Se importa desde app.css, así que todas las vistas que cargan
+| @vite('resources/css/app.css') ya lo tienen.
+|
+| Cómo usarlo (resumen; detalle en AGENTS/02-guia-visual.md y 03-componentes.md):
+|   1. Colores y fuentes: usar los tokens de @theme (bg-principal, text-texto,
+|      font-display, font-mono...). No escribir hexadecimales sueltos.
+|   2. Piezas repetidas: usar las clases de @layer components (.tarjeta,
+|      .campo, .boton-principal...). No copiar y pegar cadenas largas de
+|      utilidades de Tailwind.
+|   3. Si falta algo, añadirlo AQUÍ (y documentarlo en AGENTS/), no en la vista.
+|
+*/
+
+/* ---------------------------------------------------------------------- */
+/* 1. Tokens del manual                                                    */
+/* ---------------------------------------------------------------------- */
+@theme {
+    /* Tipografías: Plus Jakarta Sans (secundaria: texto, formularios),
+       Inter (primaria: títulos) y JetBrains Mono (terciaria: fechas,
+       contadores, horas y otros datos variables). */
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    /* Paleta del manual */
+    --color-principal: #FF6A3B;   /* naranja: logotipo, botones de acción, énfasis de marca */
+    --color-secundario: #E6E1DA;  /* cendra suau: fondo neutro de la interfaz */
+    --color-destacado: #111827;   /* negro: cabeceras y elementos de control oscuros */
+    --color-alerta: #E53E3E;      /* rojo: errores, bloqueos y plazos a punto de vencer */
+    --color-texto: #1F2937;       /* gris antracita: cuerpo de texto */
+
+    /* Variantes del naranja (no están en el manual: derivadas para hover y degradados) */
+    --color-principal-oscuro: #F45B2D;
+    --color-principal-claro: #FF8A5B;
+    --color-principal-suave: #FFB088;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 2. Componentes                                                          */
+/* ---------------------------------------------------------------------- */
+@layer components {
+    /* Fondo de pantalla completa: imagen + capa oscura. Va en <body>.
+       El contenido de la página va dentro de <main class="app-contenido ..."> */
+    .app-fondo {
+        @apply relative isolate min-h-screen overflow-x-hidden bg-slate-800 bg-[url('/images/imagenFondoRegistro.png')] bg-cover bg-fixed bg-center bg-no-repeat p-4 font-sans text-slate-700 sm:p-6;
+    }
+
+    .app-fondo::before {
+        content: '';
+        @apply fixed inset-0 -z-10 bg-slate-900/65 backdrop-blur-[2px];
+    }
+
+    /* Tarjeta blanca translúcida (contenedor principal de cualquier bloque) */
+    .tarjeta {
+        @apply overflow-hidden rounded-2xl border border-white/60 bg-white/95 shadow-[0_24px_70px_rgba(15,23,42,0.3)] backdrop-blur-sm;
+    }
+
+    /* Franja naranja que va como primer hijo de .tarjeta */
+    .tarjeta-franja {
+        @apply h-1.5 bg-gradient-to-r from-principal via-principal-claro to-principal-suave;
+    }
+
+    /* Relleno interior de una tarjeta de formulario o de cabecera */
+    .tarjeta-cuerpo {
+        @apply p-6 sm:p-9;
+    }
+
+    /* Texto pequeño en mayúsculas encima de un título */
+    .sobretitulo {
+        @apply text-xs font-bold uppercase tracking-[0.2em] text-principal;
+    }
+
+    .titulo-pagina {
+        @apply font-display text-3xl font-bold tracking-tight text-slate-900;
+    }
+
+    .titulo-seccion {
+        @apply font-display text-xl font-bold tracking-tight text-slate-900;
+    }
+
+    /* Texto secundario: descripciones y ayudas */
+    .texto-suave {
+        @apply text-sm leading-6 text-slate-500;
+    }
+
+    /* Formularios */
+    .etiqueta {
+        @apply mb-1.5 block text-sm font-semibold text-slate-700;
+    }
+
+    .campo {
+        @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-[15px] text-texto shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-400 focus:border-principal focus:ring-4 focus:ring-principal/15;
+    }
+
+    .campo-error {
+        @apply mt-1.5 text-[13px] font-medium text-alerta;
+    }
+
+    /* Botón de acción principal (uno por pantalla como norma) */
+    .boton-principal {
+        @apply rounded-xl bg-principal px-6 py-3.5 text-base font-bold text-white shadow-[0_8px_20px_rgba(255,106,59,0.25)] transition duration-200 hover:-translate-y-0.5 hover:bg-principal-oscuro hover:shadow-[0_12px_24px_rgba(255,106,59,0.3)] focus:outline-none focus:ring-4 focus:ring-principal/25 active:translate-y-0;
+    }
+
+    /* Barra de progreso: <div class="progreso" role="progressbar" ...><div class="progreso-barra" style="width: 40%"></div></div> */
+    .progreso {
+        @apply h-2 overflow-hidden rounded-full bg-slate-200;
+    }
+
+    .progreso-barra {
+        @apply h-full rounded-full bg-gradient-to-r from-principal to-principal-suave;
+    }
+}

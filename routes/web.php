@@ -14,4 +14,4 @@ Route::get('/saludos/{nombre?}', function ($nombre = "invitado"){
 
 Route::get('/registro', [RegistroController::class, 'index']);
 
-Route::get('/proyectos', [ProyectosController::class, 'index']);
+Route::get('/proyectos', [ProyectosController::class, 'index'])->name('proyectos.index');
