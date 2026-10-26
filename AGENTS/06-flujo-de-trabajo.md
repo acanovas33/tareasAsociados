@@ -3,18 +3,18 @@
 ## Equipo «ChatGPT y asociados»
 | Persona | Cuenta GitHub | Áreas habituales |
 |---|---|---|
-| Albert Canovas Pera | `acanovas33` (propietario del repo) | Wireframe, registro, BD |
+| Albert Canovas Pera | `acanovas33` (propietario del repo) | Login, wireframe, BD |
 | Óscar Ojuel González | `oojuelg2526-cmyk` | Vista de inicio (proyectos) |
-| Raúl García Moreno | `[PENDENT]` | Login |
+| Raúl García Moreno | `[PENDENT]` | Registro, BD |
 | Arnaldo Alonso Huapaya Sierra | `[PENDENT]` (rama `alonso`) | Modelo relacional, paleta y tipografías |
 
-Estado y reparto reales: **Airtable «Proyecto 1 tareas»** (pestañas Backlog, Sprint 1, 2, 3). Reparto del Sprint 2 (leído el 20/10/2026):
+Estado y reparto reales: **Airtable «Proyecto 1 tareas»** (pestañas Backlog, Sprint 1, 2, 3). Reparto del Sprint 2 (leído el 26/10/2026; fecha límite de todas: 26/10/2026):
 | Tarea | Responsable |
 |---|---|
-| Vista: Página de Login | Raúl García |
-| Vista: Página de Registro | Albert Canovas |
+| Vista: Página de Login | Albert Canovas |
+| Vista: Página de Registro | Raúl García |
 | Vista: Página de inicio, donde se muestran los proyectos | Óscar Ojuel |
-| BD: Creación de la base de datos | Albert Canovas |
+| BD: Creación de la base de datos | Albert Canovas y Raúl García |
 | BD: crear modelo relacional | Arnaldo Alonso |
 **Una tarea, un responsable.** Cada persona trabaja con su agente solo en lo suyo; si necesita algo de otra tarea, lo pide al responsable.
 

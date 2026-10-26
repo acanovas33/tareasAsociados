@@ -4,8 +4,8 @@ Inventario de vistas de la aplicación, su estado y de dónde sale cada diseño.
 
 | Pantalla | Ruta | Vista / controlador | Responsable (Airtable) | Rama | Estado (20/10/2026) |
 |---|---|---|---|---|---|
-| Registro («sign up») | `/` y `/registro` | `registro.blade.php` · `RegistroController@index` | Albert | `main` / `registro` | Maquetada, sin backend (no guarda usuarios). La rama `registro` usa Tailwind con colores previos al manual |
-| Login | `[PENDENT]` | — | Raúl | `Login` (vacía) | Sin empezar |
+| Registro («sign up») | `/` y `/registro` | `registro.blade.php` · `RegistroController@index` | Raúl (Airtable; el código lo ha subido Albert) | `main` / `registro` | Maquetada, sin backend (no guarda usuarios). La rama `registro` usa Tailwind con colores previos al manual |
+| Login | `[PENDENT]` | — | Albert | `Login` (vacía) | Sin empezar en el repo; en Airtable «In progress» |
 | Inicio: lista de proyectos | `/proyectos` (`proyectos.index`) | `proyectos.blade.php` · `ProyectosController@index` | Óscar | `projectlist` | Hecha con datos de ejemplo; usa `devsprint.css` |
 | Guía de estilos (interna, solo local) | `/guia-estilos` (`guia-estilos.index`) | `guia-estilos.blade.php` · `GuiaEstilosController@index` | Óscar | `guia-estilos` | Hecha; muestra todos los componentes de `devsprint.css` |
 | Crear proyecto | `[PENDENT]` | — | — | — | El botón «Nuevo proyecto» aún no enlaza a nada |
