@@ -11,19 +11,7 @@ class Usuario extends Authenticatable
     protected $table = 'usuario';
     public $timestamps = false;
 
-    protected $fillable = ['nombre', 'correo', 'contrasena'];
-
-    protected $hidden = ['contrasena'];
-
-    protected $casts = [
-        'contrasena' => 'hashed',
-    ];
-
-    // Necesario porque la columna no se llama "password"
-    public function getAuthPassword()
-    {
-        return $this->contrasena;
-    }
+    
 
     public function tareas(): BelongsToMany
     {

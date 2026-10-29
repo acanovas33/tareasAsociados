@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,19 +11,7 @@ class Tarea extends Model
     protected $table = 'tarea';
     public $timestamps = false;
 
-    protected $fillable = [
-        'nombre',
-        'descripcion',
-        'fecha_inicio',
-        'fecha_limite',
-        'id_estado',
-        'id_proyecto',
-    ];
-
-    protected $casts = [
-        'fecha_inicio' => 'date',
-        'fecha_limite' => 'date',
-    ];
+   
 
     public function estado(): BelongsTo
     {

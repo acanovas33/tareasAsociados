@@ -10,7 +10,6 @@ class Rol extends Model
     protected $table = 'rol';
     public $timestamps = false;
 
-    protected $fillable = ['nombre'];
 
     public function usuarioProyectos(): HasMany
     {

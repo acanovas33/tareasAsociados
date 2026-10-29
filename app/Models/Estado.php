@@ -10,7 +10,6 @@ class Estado extends Model
     protected $table = 'estado';
     public $timestamps = false;
 
-    protected $fillable = ['nombre'];
 
     public function tareas(): HasMany
     {
