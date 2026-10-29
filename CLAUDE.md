@@ -1,3 +1,7 @@
+# Guía del equipo DevSprint (leer primero)
+
+Antes de crear o modificar vistas, estilos o código de la aplicación, lee **`AGENTS/README.md`** (índice) y, para cualquier cosa visual, `AGENTS/01-identidad-y-marca.md`, `AGENTS/02-guia-visual.md` y `AGENTS/03-componentes.md`. Contienen el sistema de diseño (`resources/css/devsprint.css`), las convenciones de código y el flujo de trabajo del equipo. Texto de la interfaz en castellano; marca **DevSprint**; sin colores ni estilos sueltos en las vistas.
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
