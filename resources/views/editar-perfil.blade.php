@@ -84,7 +84,7 @@
                             type="text"
                             id="name"
                             name="name"
-                            value="{{ old('name', auth()->user()?->name ?? 'Usuario de prueba') }}"
+                            value="{{ old('name', $usuario->nombre) }}"
                             autocomplete="name"
                             required
                             maxlength="255"
@@ -106,7 +106,7 @@
                             type="email"
                             id="email"
                             name="email"
-                            value="{{ old('email', auth()->user()?->email ?? 'usuario@devsprint.com') }}"
+                            value="{{ old('email', $usuario->correo) }}"
                             autocomplete="email"
                             required
                             maxlength="255"

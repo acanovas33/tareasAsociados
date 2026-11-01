@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Usuario;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,7 +13,9 @@ class PerfilController extends Controller
 {
     public function edit(): View
     {
-        return view('editar-perfil');
+        $usuario = Usuario::query(1)->findOrFail(1);
+
+        return view('editar-perfil', compact('usuario'));
     }
 
     public function update(Request $request): RedirectResponse
