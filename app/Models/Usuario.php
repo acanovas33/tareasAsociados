@@ -11,8 +11,6 @@ class Usuario extends Authenticatable
     protected $table = 'usuario';
     public $timestamps = false;
 
-    
-
     public function tareas(): BelongsToMany
     {
         return $this->belongsToMany(
