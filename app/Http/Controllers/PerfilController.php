@@ -2,53 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class PerfilController extends Controller
 {
     public function edit(): View
     {
-        return view('editar-perfil');
+        $usuario = Auth::user();
+
+        return view('editar-perfil', compact('usuario'));
     }
 
     public function update(Request $request): RedirectResponse
     {
-        $usuario = $request->user();
+        $usuario = Auth::user();
+
+        // Cuando se integre la autenticación, comprobará que haya sesión.
         abort_unless($usuario, 401);
 
         $datos = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+
             'email' => [
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email')->ignore($usuario->id),
+                Rule::unique('usuario', 'correo')->ignore($usuario->id),
             ],
+
+            'current_password' => ['required', 'current_password'],
         ]);
 
-        $usuario->update($datos);
+        $usuario->nombre = $datos['name'];
+        $usuario->correo = $datos['email'];
+
+        $usuario->save();
 
         return back()->with('success', 'Perfil actualizado correctamente.');
-    }
-
-    public function updatePassword(Request $request): RedirectResponse
-    {
-        $usuario = $request->user();
-        abort_unless($usuario, 401);
-
-        $datos = $request->validate([
-            'current_password' => ['required', 'current_password'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-
-        $usuario->update([
-            'password' => Hash::make($datos['password']),
-        ]);
-
-        return back()->with('success', 'Contraseña actualizada correctamente.');
     }
 }
