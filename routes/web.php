@@ -5,6 +5,7 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\RegistroController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 
 Route::get('/', function () {
     return view('registro');
@@ -13,6 +14,7 @@ Route::get('/', function () {
 Route::get('/saludos/{nombre?}', function ($nombre = 'invitado') {
     return 'Bienvenido a laravel '.$nombre;
 })->name('saludo');
+
 
 Route::get('/proyectos', [ProyectosController::class, 'index'])->name('proyectos.index');
 
@@ -27,3 +29,6 @@ Route::put('/perfil/contrasena', [PerfilController::class, 'updatePassword'])->n
 Route::get('/registro', [RegistroController::class, 'create'])->name('registro.create');
 Route::post('/registro', [RegistroController::class, 'store'])->name('registro.store');
 Route::get('/registrocorrecto', [RegistroController::class, 'correcto'])->name('registrocorrecto');
+Route::get('/login', [LoginController::class, 'mostrarLogin'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

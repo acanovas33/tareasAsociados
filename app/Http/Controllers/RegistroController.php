@@ -26,7 +26,7 @@ class RegistroController extends Controller
 
     public function correcto(): View
     {
-        return view('registrocorrecto', [
+        return view('login', [
             'usuarios' => Usuario::all(),
         ]);
     }
@@ -44,7 +44,7 @@ class RegistroController extends Controller
         if ($request->input('contrasena') === $request->input('repetir_contrasena')) {
             $usuario->save();
 
-            return redirect()->route('registrocorrecto')->with('success', 'Usuario registrado correctamente');
+            return redirect()->route('login')->with('success', 'Usuario registrado correctamente');
         } else {
             return back()->withErrors(['contrasena' => 'Las contraseñas no coinciden'])->withInput();
         }
