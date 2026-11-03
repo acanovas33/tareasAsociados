@@ -4,126 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registro</title>
-    <style>
-        :root {
-            --principal:  #FF6A3B;
-            --secundario: #E6E1DA;
-            --destacado:  #111827;
-            --alerta:     #E53E3E;
-            --texto:      #1F2937;
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--secundario);
-            background-image: linear-gradient(rgba(230, 225, 218, 0.35), rgba(230, 225, 218, 0.35)), url('{{ asset('images/imagenFondoRegistro.png') }}');
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            font-family: Arial, sans-serif;
-            color: var(--texto);
-        }
-
-        .card {
-            background: #fff;
-            width: 100%;
-            max-width: 400px;
-            padding: 32px;
-            border-radius: 12px;
-            border-top: 6px solid var(--principal);
-            box-shadow: 0 4px 20px rgba(17, 24, 39, 0.1);
-        }
-
-        h1 {
-            margin: 0 0 4px;
-            color: var(--destacado);
-        }
-
-        .logo {
-            display: block;
-            width: 220px;
-            max-width: 100%;
-            height: auto;
-            margin: 0 auto 24px;
-        }
-
-        .subtitulo { margin: 0 0 24px; font-size: 14px; }
-
-        label {
-            display: block;
-            margin: 16px 0 6px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--secundario);
-            border-radius: 8px;
-            font-size: 15px;
-            color: var(--texto);
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--principal);
-        }
-
-        .error {
-            color: var(--alerta);
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        button {
-            width: 100%;
-            margin-top: 24px;
-            padding: 12px;
-            background: var(--principal);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover { opacity: 0.9; }
-    </style>
+    @vite('resources/css/app.css')
 </head>
-<body>
-    <div class="card">
-        <img src="{{ asset('images/logoPrincipal.png') }}" alt="Logo de mi aplicación" class="logo">
-        <h1>Crear cuenta</h1>
-        <p class="subtitulo">Empieza a organizar tus tareas</p>
+<body class="relative flex min-h-screen items-center justify-center overflow-x-hidden bg-[#1E293B] bg-[url('/images/imagenFondoRegistro.png')] bg-cover bg-center bg-no-repeat p-4 font-sans text-[#334155] sm:p-6">
+    <div class="absolute inset-0 bg-[#0F172A]/65 backdrop-blur-[2px]"></div>
 
-        <form>
-            @csrf
+    <main class="relative w-full max-w-md">
+        <div class="overflow-hidden rounded-2xl border border-white/60 bg-white/95 shadow-[0_24px_70px_rgba(15,23,42,0.3)] backdrop-blur-sm">
+            <div class="h-1.5 bg-gradient-to-r from-[#FF6A3B] via-[#FF8A5B] to-[#FFB088]"></div>
+            <div class="p-6 sm:p-9">
+                <div class="mb-7 flex justify-center">
+                    <div>
+                        <img src="{{ asset('images/logoPrincipal.png') }}" alt="Logo de mi aplicación" class="block h-auto w-[190px] max-w-full">
+                    </div>
+                </div>
 
-            <label for="name">Nombre</label>
-            <input type="text" id="name" name="name" value="{{ old('name') }}">
-            @error('name') <div class="error">{{ $message }}</div> @enderror
+                <div class="mb-7">
+                    <p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#FF6A3B]">Bienvenido</p>
+                    <h1 class="text-3xl font-bold tracking-tight text-[#0F172A]">Crear cuenta</h1>
+                    <p class="mt-2 text-sm leading-6 text-[#64748B]">Empieza a organizar tus tareas de forma sencilla y eficiente.</p>
+                </div>
 
-            <label for="email">Correo electrónico</label>
-            <input type="email" id="email" name="email" value="{{ old('email') }}">
-            @error('email') <div class="error">{{ $message }}</div> @enderror
+                <form method="POST" action="{{ route('registro.store') }}" class="space-y-4">
+                    @csrf
 
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password">
-            @error('password') <div class="error">{{ $message }}</div> @enderror
+                    <div>
+                        <label for="nombre" class="mb-1.5 block text-sm font-semibold text-[#334155]">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" value="{{ old('nombre') }}" autocomplete="name" required class="w-full rounded-xl border border-[#CBD5E1] bg-white px-4 py-3 text-[15px] text-[#1F2937] shadow-sm outline-none transition placeholder:text-[#94A3B8] hover:border-[#94A3B8] focus:border-[#FF6A3B] focus:ring-4 focus:ring-[#FF6A3B]/15">
+                        @error('nombre') <div class="mt-1.5 text-[13px] font-medium text-[#E53E3E]">{{ $message }}</div> @enderror
+                    </div>
 
-            <label for="password_confirmation">Repetir contraseña</label>
-            <input type="password" id="password_confirmation" name="password_confirmation">
+                    <div>
+                        <label for="correo" class="mb-1.5 block text-sm font-semibold text-[#334155]">Correo electrónico</label>
+                        <input type="email" id="correo" name="correo" value="{{ old('correo') }}" autocomplete="email" required class="w-full rounded-xl border border-[#CBD5E1] bg-white px-4 py-3 text-[15px] text-[#1F2937] shadow-sm outline-none transition placeholder:text-[#94A3B8] hover:border-[#94A3B8] focus:border-[#FF6A3B] focus:ring-4 focus:ring-[#FF6A3B]/15">
+                        @error('correo') <div class="mt-1.5 text-[13px] font-medium text-[#E53E3E]">{{ $message }}</div> @enderror
+                    </div>
 
-            <button type="submit">Registrarme</button>
-        </form>
-    </div>
+                    <div>
+                        <label for="contrasena" class="mb-1.5 block text-sm font-semibold text-[#334155]">Contraseña</label>
+                        <input type="password" id="contrasena" name="contrasena" autocomplete="new-password" required class="w-full rounded-xl border border-[#CBD5E1] bg-white px-4 py-3 text-[15px] text-[#1F2937] shadow-sm outline-none transition placeholder:text-[#94A3B8] hover:border-[#94A3B8] focus:border-[#FF6A3B] focus:ring-4 focus:ring-[#FF6A3B]/15">
+                        @error('contrasena') <div class="mt-1.5 text-[13px] font-medium text-[#E53E3E]">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div>
+                        <label for="repetir_contrasena" class="mb-1.5 block text-sm font-semibold text-[#334155]">Repetir contraseña</label>
+                        <input type="password" id="repetir_contrasena" name="repetir_contrasena" autocomplete="new-password" required class="w-full rounded-xl border border-[#CBD5E1] bg-white px-4 py-3 text-[15px] text-[#1F2937] shadow-sm outline-none transition placeholder:text-[#94A3B8] hover:border-[#94A3B8] focus:border-[#FF6A3B] focus:ring-4 focus:ring-[#FF6A3B]/15">
+                        @error('repetir_contrasena') <div class="mt-1.5 text-[13px] font-medium text-[#E53E3E]">{{ $message }}</div> @enderror
+                    </div>
+
+                    <button type="submit" class="w-full rounded-xl bg-[#FF6A3B] px-4 py-3.5 text-base font-bold text-white shadow-[0_8px_20px_rgba(255,106,59,0.25)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#F45B2D] hover:shadow-[0_12px_24px_rgba(255,106,59,0.3)] focus:outline-none focus:ring-4 focus:ring-[#FF6A3B]/25 active:translate-y-0">Crear mi cuenta</button>
+                </form>
+            </div>
+        </div>
+        <p class="mt-5 text-center text-xs text-white/75">Organiza tu día. Avanza con claridad.</p>
+    </main>
 </body>
 </html>
