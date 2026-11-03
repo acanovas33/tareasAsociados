@@ -10,11 +10,9 @@ Route::get('/', function () {
     return view('registro');
 });
 
-Route::get('/saludos/{nombre?}', function ($nombre = "invitado"){
-    return "Bienvenido a laravel " . $nombre;
-})->name("saludo");
-
-Route::get('/registro', [RegistroController::class, 'index']);
+Route::get('/saludos/{nombre?}', function ($nombre = 'invitado') {
+    return 'Bienvenido a laravel '.$nombre;
+})->name('saludo');
 
 Route::get('/proyectos', [ProyectosController::class, 'index'])->name('proyectos.index');
 
@@ -25,3 +23,7 @@ Route::get('/perfil/editar', [PerfilController::class, 'edit'])->name('perfil.ed
 Route::put('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
 
 Route::put('/perfil/contrasena', [PerfilController::class, 'updatePassword'])->name('perfil.password.update');
+
+Route::get('/registro', [RegistroController::class, 'create'])->name('registro.create');
+Route::post('/registro', [RegistroController::class, 'store'])->name('registro.store');
+Route::get('/registrocorrecto', [RegistroController::class, 'correcto'])->name('registrocorrecto');
