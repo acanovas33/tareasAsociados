@@ -108,6 +108,16 @@
         @apply rounded-xl bg-principal px-6 py-3.5 text-base font-bold text-white shadow-[0_8px_20px_rgba(255,106,59,0.25)] transition duration-200 hover:-translate-y-0.5 hover:bg-principal-oscuro hover:shadow-[0_12px_24px_rgba(255,106,59,0.3)] focus:outline-none focus:ring-4 focus:ring-principal/25 active:translate-y-0;
     }
 
+    /* Botón secundario (cancelar, volver): junto a .boton-principal */
+    .boton-secundario {
+        @apply rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-base font-bold text-slate-700 transition duration-200 hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-300/50;
+    }
+
+    /* Pop-up: <dialog class="modal"> con una .tarjeta dentro. Se abre con modal.js */
+    .modal {
+        @apply m-auto max-h-[calc(100vh-2rem)] w-full max-w-lg overflow-y-auto bg-transparent p-4 backdrop:bg-slate-900/65 backdrop:backdrop-blur-[2px];
+    }
+
     /* Nombre de clase o fragmento de código dentro de un texto (guía de estilos, documentación) */
     .codigo {
         @apply rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-xs text-slate-700;

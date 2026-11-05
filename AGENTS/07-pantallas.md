@@ -8,6 +8,7 @@ Inventario de vistas de la aplicación, su estado y de dónde sale cada diseño.
 | Login | `[PENDENT]` | — | Albert | `Login` (vacía) | Sin empezar en el repo; en Airtable «In progress» |
 | Inicio: lista de proyectos | `/proyectos` (`proyectos.index`) | `proyectos.blade.php` · `ProyectosController@index` | Óscar | `projectlist` | Hecha con datos de ejemplo; usa `devsprint.css` |
 | Guía de estilos (interna, solo local) | `/guia-estilos` (`guia-estilos.index`) | `guia-estilos.blade.php` · `GuiaEstilosController@index` | Óscar | `guia-estilos` | Hecha; muestra todos los componentes de `devsprint.css` |
+| Pop-up «Crear tarea» (componente) | `POST /proyectos/{proyecto}/tareas` (`tareas.store`) | `components/modal-crear-tarea.blade.php` · `TareaController@store` | Óscar | `popup-crear-tarea` | Hecho con columnas de `tarea` provisionales; falta integrarlo en la página del proyecto (Albert) |
 | Crear proyecto | `[PENDENT]` | — | — | — | El botón «Nuevo proyecto» aún no enlaza a nada |
 | Proyecto con tareas / Kanban | `[PENDENT]` | — | — | — | Sin asignar |
 
