@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tarea;
+use App\Models\Proyecto;
+use App\Models\Estado;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class TareaController extends Controller
@@ -10,11 +13,17 @@ class TareaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Proyecto $proyecto)
     {
-        //
-    }
+        $estados = Estado::orderBy('id')->get();
+        $tareas  = Tarea::where('id_proyecto', $proyecto->id)
+            ->with('usuarios')
+            ->get()
+            ->groupBy('id_estado');
 
+
+        return view ('tareasProyecto', compact('proyecto', 'tareas', 'estados'));
+    }
     /**
      * Show the form for creating a new resource.
      */
