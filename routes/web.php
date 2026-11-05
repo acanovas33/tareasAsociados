@@ -4,6 +4,7 @@ use App\Http\Controllers\GuiaEstilosController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\TareaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 
@@ -29,6 +30,9 @@ Route::put('/perfil/contrasena', [PerfilController::class, 'updatePassword'])->n
 Route::get('/registro', [RegistroController::class, 'create'])->name('registro.create');
 Route::post('/registro', [RegistroController::class, 'store'])->name('registro.store');
 Route::get('/registrocorrecto', [RegistroController::class, 'correcto'])->name('registrocorrecto');
+
+Route::get('/tareas/{proyecto}', [TareaController::class, 'index'])->name('tareas.index');
+
 Route::get('/login', [LoginController::class, 'mostrarLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
