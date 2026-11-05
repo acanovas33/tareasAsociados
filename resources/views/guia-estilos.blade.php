@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Guía de estilos</title>
     @fonts
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="app-fondo">
     <main class="mx-auto w-full max-w-5xl space-y-6">
@@ -142,8 +142,28 @@
                     <button type="button" class="boton-principal w-full sm:w-64">Crear mi cuenta</button>
                 </div>
                 <p class="texto-suave mt-4"><span class="codigo">.boton-principal</span> + <span class="codigo">w-full</span> o <span class="codigo">w-full sm:w-auto</span></p>
+
+                <h3 class="mt-8 text-sm font-bold text-slate-900">Botón secundario</h3>
+                <div class="mt-3">
+                    <button type="button" class="boton-secundario w-full sm:w-auto">Cancelar</button>
+                </div>
+                <p class="texto-suave mt-4"><span class="codigo">.boton-secundario</span> junto al principal (cancelar, volver)</p>
             </div>
         </section>
+
+        {{-- 4b. Pop-up --}}
+        <section class="tarjeta">
+            <div class="tarjeta-franja"></div>
+            <div class="tarjeta-cuerpo">
+                <h2 class="titulo-seccion">Pop-up (modal)</h2>
+                <p class="texto-suave mt-2"><span class="codigo">&lt;dialog class="modal"&gt;</span> con una tarjeta dentro; se abre con <span class="codigo">data-abrir-modal</span> y se cierra con <span class="codigo">data-cerrar-modal</span>, la tecla Esc o un clic en el fondo. Ejemplo: el componente <span class="codigo">&lt;x-modal-crear-tarea&gt;</span> (datos de ejemplo, no guarda nada).</p>
+                <div class="mt-6">
+                    <button type="button" class="boton-principal w-full sm:w-auto" data-abrir-modal="modal-crear-tarea">Nueva tarea</button>
+                </div>
+            </div>
+        </section>
+
+        <x-modal-crear-tarea :proyecto="1" :estados="[1 => 'Por hacer', 2 => 'En progreso', 3 => 'Hecha']" :usuarios="[1 => 'Albert Canovas', 2 => 'Óscar Ojuel', 3 => 'Raúl García']" />
 
         {{-- 5. Formularios --}}
         <section class="tarjeta">

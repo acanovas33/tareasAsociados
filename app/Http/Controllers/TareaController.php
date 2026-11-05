@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Proyecto;
 use App\Models\Tarea;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TareaController extends Controller
@@ -24,11 +26,44 @@ class TareaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Crea una tarea en el proyecto desde el pop-up «Crear tarea».
+     *
+     * Columnas provisionales de la tabla `tarea` (pendiente de confirmar con el modelo de BD):
+     * nombre, descripcion, fecha_limite, id_proyecto e id_estado; la asignación va en `usuario_asignado`.
+     * Pendiente: comprobar que el usuario con sesión es miembro del proyecto y, si no es administrador,
+     * que solo pueda asignarse la tarea a sí mismo.
      */
-    public function store(Request $request)
+    public function store(Request $request, Proyecto $proyecto): RedirectResponse
     {
-        //
+        $datos = $request->validateWithBag('crearTarea', [
+            'nombre' => ['required', 'string', 'max:255'],
+            'descripcion' => ['nullable', 'string', 'max:1000'],
+            'id_estado' => ['required', 'integer', 'exists:estado,id'],
+            'fecha_limite' => ['nullable', 'date'],
+            'id_usuario' => ['nullable', 'integer', 'exists:usuario,id'],
+        ], [
+            'nombre.required' => 'El título de la tarea es obligatorio.',
+            'nombre.max' => 'El título no puede superar los 255 caracteres.',
+            'descripcion.max' => 'La descripción no puede superar los 1000 caracteres.',
+            'id_estado.required' => 'Elige un estado.',
+            'id_estado.exists' => 'El estado elegido no existe.',
+            'fecha_limite.date' => 'La fecha límite no es una fecha válida.',
+            'id_usuario.exists' => 'La persona elegida no existe.',
+        ]);
+
+        $tarea = new Tarea;
+        $tarea->nombre = $datos['nombre'];
+        $tarea->descripcion = $datos['descripcion'] ?? null;
+        $tarea->fecha_limite = $datos['fecha_limite'] ?? null;
+        $tarea->id_estado = $datos['id_estado'];
+        $tarea->id_proyecto = $proyecto->id;
+        $tarea->save();
+
+        if (! empty($datos['id_usuario'])) {
+            $tarea->usuarios()->attach($datos['id_usuario']);
+        }
+
+        return back()->with('success', 'Tarea creada correctamente.');
     }
 
     /**

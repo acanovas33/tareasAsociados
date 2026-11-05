@@ -4,6 +4,7 @@ use App\Http\Controllers\GuiaEstilosController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\TareaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 
@@ -32,3 +33,5 @@ Route::get('/registrocorrecto', [RegistroController::class, 'correcto'])->name('
 Route::get('/login', [LoginController::class, 'mostrarLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::post('/proyectos/{proyecto}/tareas', [TareaController::class, 'store'])->name('tareas.store');
