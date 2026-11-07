@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Proyecto extends Model
 {
     protected $table = 'proyecto';
+
     public $timestamps = false;
 
     protected $fillable = ['nombre'];
@@ -20,7 +22,10 @@ class Proyecto extends Model
 
     public function usuarioRoles(): HasMany
     {
-        return $this->hasMany(UsuarioProyectoRol::class, 'id_proyecto');
+        return $this->hasMany(
+            UsuarioProyectoRol::class,
+            'id_proyecto'
+        );
     }
 
     public function usuarios(): BelongsToMany
