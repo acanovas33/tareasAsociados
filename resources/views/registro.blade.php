@@ -51,7 +51,7 @@
                         <input type="password" id="repetir_contrasena" name="repetir_contrasena" autocomplete="new-password" required class="w-full rounded-xl border border-[#CBD5E1] bg-white px-4 py-3 text-[15px] text-[#1F2937] shadow-sm outline-none transition placeholder:text-[#94A3B8] hover:border-[#94A3B8] focus:border-[#FF6A3B] focus:ring-4 focus:ring-[#FF6A3B]/15">
                         @error('repetir_contrasena') <div class="mt-1.5 text-[13px] font-medium text-[#E53E3E]">{{ $message }}</div> @enderror
                     </div>
-
+                    <a href="{{ route('login') }}" class="text-[#FF6A3B] hover:text-[#F45B2D]">Iniciar sesión</a>
                     <button type="submit" class="w-full rounded-xl bg-[#FF6A3B] px-4 py-3.5 text-base font-bold text-white shadow-[0_8px_20px_rgba(255,106,59,0.25)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#F45B2D] hover:shadow-[0_12px_24px_rgba(255,106,59,0.3)] focus:outline-none focus:ring-4 focus:ring-[#FF6A3B]/25 active:translate-y-0">Crear mi cuenta</button>
                 </form>
             </div>

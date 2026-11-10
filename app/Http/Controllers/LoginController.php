@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
@@ -24,6 +25,8 @@ class LoginController extends Controller
             ->first();
 
         if ($usuario && Hash::check($request->password, $usuario->contrasena)) {
+                Auth::login($usuario);
+
             $request->session()->regenerate();
 
             return redirect()->route('proyectos.index');
