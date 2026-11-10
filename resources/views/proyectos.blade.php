@@ -30,115 +30,36 @@
                     <p class="texto-suave mt-2">
                         Aquí están todos los proyectos en los que colaboras.
                     </p>
-<div class="mt-6 max-w-md">
 
-    <label
-        for="proyectoSeleccionado"
-        class="mb-2 block font-semibold text-slate-700"
-    >
-        Selecciona un proyecto
-    </label>
 
-    <select
-        id="proyectoSeleccionado"
-        name="proyectoSeleccionado"
-        class="w-full rounded-lg border border-slate-300
-               bg-white p-3 text-slate-700 shadow-sm
-               transition
-               focus:border-principal focus:outline-none
-               focus:ring-2 focus:ring-principal/20"
-    >
 
-        <option value="" disabled selected>
-            Elige un proyecto...
-        </option>
-
-        @forelse ($proyectosUsuario as $usuarioProyecto)
-
-            <option value="{{ $usuarioProyecto->proyecto->id }}">
-
-                {{ $usuarioProyecto->proyecto->nombre }}
-                ({{ $usuarioProyecto->rol->nombre }})
-
-            </option>
-
-        @empty
-
-            <option value="" disabled>
-                No tienes proyectos disponibles
-            </option>
-
-        @endforelse
-
-    </select>
-
-</div>
-<div class="mt-6 max-w-md">
-
-    <label
-        for="proyectoSeleccionado"
-        class="mb-2 block font-semibold text-slate-700"
-    >
-        Selecciona un proyecto
-    </label>
-
-    <select
-        id="proyectoSeleccionado"
-        name="proyectoSeleccionado"
-        class="w-full rounded-lg border border-slate-300 bg-white p-3
-               text-slate-700 shadow-sm transition
-               focus:border-principal focus:outline-none
-               focus:ring-2 focus:ring-principal/20"
-    >
-
-        <option value="" disabled selected>
-            Elige un proyecto...
-        </option>
-
-        @forelse ($proyectosUsuario as $usuarioProyecto)
-
-            <option value="{{ $usuarioProyecto->proyecto->id_proyecto }}">
-
-                {{ $usuarioProyecto->proyecto->nombre }}
-                ({{ $usuarioProyecto->rol->nombre }})
-
-            </option>
-
-        @empty
-
-            <option value="" disabled>
-                No tienes proyectos disponibles
-            </option>
-
-        @endforelse
-
-    </select>
-
-</div>
-```
                 </div>
 
                 <div class="flex flex-col items-end gap-4">
 
-                    <div class="flex items-center gap-3">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-principal font-bold text-white">
-                        </div>
-
-                        <span class="font-semibold text-slate-700">
+                    <details class="menu-usuario">
+                        <summary class="menu-usuario-trigger">
                             {{ $usuario->nombre }}
-                        </span>
-                    </div>
+                            <span aria-hidden="true">⌄</span>
+                        </summary>
+
+                        <div class="menu-usuario-opciones">
+                            <a href="{{ route('perfil.edit') }}" class="menu-usuario-enlace">
+                                Editar perfil
+                            </a>
+
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+
+                                <button type="submit" class="menu-usuario-enlace">
+                                    Cerrar sesión
+                                </button>
+                            </form>
+                        </div>
+                    </details>
 
                     
 <div class="flex flex-col items-end gap-4">
-
-    <div class="flex items-center gap-3">
-        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-principal font-bold text-white">
-        </div>
-
-        <span class="font-semibold text-slate-700">
-        </span>
-    </div>
 
     <button
         type="button"
