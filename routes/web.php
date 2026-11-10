@@ -30,8 +30,12 @@ Route::put('/perfil/contrasena', [PerfilController::class, 'updatePassword'])->n
 Route::get('/registro', [RegistroController::class, 'create'])->name('registro.create');
 Route::post('/registro', [RegistroController::class, 'store'])->name('registro.store');
 Route::get('/registrocorrecto', [RegistroController::class, 'correcto'])->name('registrocorrecto');
+
+Route::get('/tareas/{proyecto}', [TareaController::class, 'index'])->name('tareas.index');
+
 Route::get('/login', [LoginController::class, 'mostrarLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+Route::post('/proyectos', [ProyectosController::class, 'store'])->name('proyectos.store');
 Route::post('/proyectos/{proyecto}/tareas', [TareaController::class, 'store'])->name('tareas.store');
