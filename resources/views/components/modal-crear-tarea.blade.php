@@ -44,21 +44,27 @@
                 </div>
 
                 <div>
+                    <label for="tarea-usuario" class="etiqueta">Asignar a</label>
+                    <select id="tarea-usuario" name="id_usuario" class="campo">
+                        <option value="">Sin asignar</option>
+                        @foreach ($usuarios as $idUsuario => $nombreUsuario)
+                            <option value="{{ $idUsuario }}" @selected((string) old('id_usuario') === (string) $idUsuario)>{{ $nombreUsuario }}</option>
+                        @endforeach
+                    </select>
+                    @if ($errores->has('id_usuario')) <div class="campo-error">{{ $errores->first('id_usuario') }}</div> @endif
+                </div>
+
+                <div>
+                    <label for="tarea-fecha-inicio" class="etiqueta">Fecha de inicio</label>
+                    <input type="date" id="tarea-fecha-inicio" name="fecha_inicio" value="{{ old('fecha_inicio') }}" class="campo font-mono">
+                    @if ($errores->has('fecha_inicio')) <div class="campo-error">{{ $errores->first('fecha_inicio') }}</div> @endif
+                </div>
+
+                <div>
                     <label for="tarea-fecha-limite" class="etiqueta">Fecha límite</label>
                     <input type="date" id="tarea-fecha-limite" name="fecha_limite" value="{{ old('fecha_limite') }}" class="campo font-mono">
                     @if ($errores->has('fecha_limite')) <div class="campo-error">{{ $errores->first('fecha_limite') }}</div> @endif
                 </div>
-            </div>
-
-            <div>
-                <label for="tarea-usuario" class="etiqueta">Asignar a</label>
-                <select id="tarea-usuario" name="id_usuario" class="campo">
-                    <option value="">Sin asignar</option>
-                    @foreach ($usuarios as $idUsuario => $nombreUsuario)
-                        <option value="{{ $idUsuario }}" @selected((string) old('id_usuario') === (string) $idUsuario)>{{ $nombreUsuario }}</option>
-                    @endforeach
-                </select>
-                @if ($errores->has('id_usuario')) <div class="campo-error">{{ $errores->first('id_usuario') }}</div> @endif
             </div>
 
             <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">

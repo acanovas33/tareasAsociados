@@ -155,8 +155,8 @@ El pop-up de crear tarea es un componente Blade (`resources/views/components/mod
     :estados="$estados"   {{-- [id => nombre], p. ej. Estado::pluck('nombre', 'id')->all() --}}
     :usuarios="$usuarios" {{-- [id => nombre], miembros del proyecto --}} />
 ```
-Envía `POST /proyectos/{proyecto}/tareas` (`tareas.store`, `TareaController@store`) con `nombre`, `descripcion`, `id_estado`, `fecha_limite` e `id_usuario`; valida con el *error bag* `crearTarea` (mensajes en castellano) y vuelve a la página con `success`. La página que lo incluya puede mostrar `session('success')`. Ejemplo vivo en `/guia-estilos`.
-Columnas de `tarea` **provisionales** (`nombre`, `descripcion`, `fecha_limite`, `id_proyecto`, `id_estado`) y pendiente comprobar permisos (ver `08`).
+Envía `POST /proyectos/{proyecto}/tareas` (`tareas.store`, `TareaController@store`) con `nombre`, `descripcion`, `id_estado`, `fecha_inicio`, `fecha_limite` e `id_usuario`; valida con el *error bag* `crearTarea` (mensajes en castellano) y vuelve a la página con `success`. La página que lo incluya puede mostrar `session('success')`. Ejemplo vivo en `/guia-estilos`.
+Ya está integrado en `tareasProyecto.blade.php` (botón en la cabecera; `TareaController@index` le pasa `$estadosPopup` y `$usuariosPopup`). **Esa vista carga Tailwind y el sistema de diseño solo por Vite (`@fonts` + `@vite`): no añadas el CDN de Tailwind, su reseteo pisa las clases de `devsprint.css`.** Columnas de `tarea` por confirmar y pendiente comprobar permisos (ver `08`).
 
 ## Cómo añadir un componente nuevo
 1. Escribe la clase en `resources/css/devsprint.css`, dentro de `@layer components`, con `@apply` y **solo tokens del manual** (más `slate` para neutros).

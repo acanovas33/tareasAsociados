@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 beforeEach(function () {
     // Esquema provisional de las tablas, hasta que el modelo de BD esté confirmado
-    foreach (['usuario_asignado', 'tarea', 'estado', 'proyecto', 'usuario'] as $tabla) {
+    foreach (['usuario_asignado', 'usuario_proyecto_rol', 'tarea', 'estado', 'proyecto', 'usuario'] as $tabla) {
         Schema::dropIfExists($tabla);
     }
 
@@ -28,9 +28,15 @@ beforeEach(function () {
         $table->id();
         $table->string('nombre');
         $table->text('descripcion')->nullable();
+        $table->date('fecha_inicio')->nullable();
         $table->date('fecha_limite')->nullable();
         $table->unsignedBigInteger('id_proyecto');
         $table->unsignedBigInteger('id_estado');
+    });
+    Schema::create('usuario_proyecto_rol', function (Blueprint $table) {
+        $table->unsignedBigInteger('id_usuario');
+        $table->unsignedBigInteger('id_proyecto');
+        $table->unsignedBigInteger('id_rol')->nullable();
     });
     Schema::create('usuario_asignado', function (Blueprint $table) {
         $table->unsignedBigInteger('id_tarea');
@@ -39,6 +45,7 @@ beforeEach(function () {
 
     DB::table('proyecto')->insert(['id' => 1, 'nombre' => 'Proyecto de prueba']);
     DB::table('estado')->insert([['id' => 1, 'nombre' => 'Por hacer'], ['id' => 2, 'nombre' => 'En progreso']]);
+    DB::table('usuario_proyecto_rol')->insert(['id_usuario' => 1, 'id_proyecto' => 1, 'id_rol' => 1]);
     DB::table('usuario')->insert(['id' => 1, 'nombre' => 'Persona de prueba', 'correo' => 'persona@devsprint.test', 'contrasena' => 'hash']);
 });
 
@@ -121,4 +128,44 @@ test('la guía de estilos incluye el pop-up de ejemplo', function () {
     $this->withoutVite();
 
     $this->get('/guia-estilos')->assertOk()->assertSee('Pop-up (modal)')->assertSee('data-abrir-modal="modal-crear-tarea"', false);
+});
+
+test('se guarda la fecha de inicio de la tarea', function () {
+    $this->post(route('tareas.store', 1), [
+        'nombre' => 'Preparar la demo',
+        'id_estado' => 1,
+        'fecha_inicio' => '2026-11-20',
+        'fecha_limite' => '2026-11-27',
+    ])->assertSessionHasNoErrors();
+
+    $this->assertDatabaseHas('tarea', ['nombre' => 'Preparar la demo', 'fecha_inicio' => '2026-11-20', 'fecha_limite' => '2026-11-27']);
+});
+
+test('la fecha límite no puede ser anterior a la de inicio', function () {
+    $this->post(route('tareas.store', 1), [
+        'nombre' => 'Fechas al revés',
+        'id_estado' => 1,
+        'fecha_inicio' => '2026-11-27',
+        'fecha_limite' => '2026-11-20',
+    ])->assertSessionHasErrorsIn('crearTarea', ['fecha_limite']);
+
+    $this->assertDatabaseCount('tarea', 0);
+});
+
+test('la página de tareas del proyecto incluye el pop-up para crear tareas', function () {
+    $this->get(route('tareas.index', 1))
+        ->assertOk()
+        ->assertSee('data-abrir-modal="modal-crear-tarea"', false)
+        ->assertSee('id="modal-crear-tarea"', false)
+        ->assertSee('Persona de prueba')
+        ->assertSee('En progreso');
+});
+
+test('tras crear una tarea desde la página del proyecto se vuelve a ella con el aviso y la tarea en su columna', function () {
+    $this->from(route('tareas.index', 1))
+        ->post(route('tareas.store', 1), ['nombre' => 'Tarea desde el pop-up', 'id_estado' => 2, 'id_usuario' => 1])
+        ->assertRedirect(route('tareas.index', 1))
+        ->assertSessionHas('success');
+
+    $this->get(route('tareas.index', 1))->assertSee('Tarea desde el pop-up')->assertSee('Persona de prueba');
 });
