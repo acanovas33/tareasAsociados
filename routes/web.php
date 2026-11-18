@@ -17,7 +17,7 @@ Route::get('/saludos/{nombre?}', function ($nombre = 'invitado') {
 })->name('saludo');
 
 
-Route::get('/proyectos', [ProyectosController::class, 'index'])->name('proyectos.index');
+Route::get('/proyectos', [ProyectosController::class, 'index'])->middleware('auth')->name('proyectos.index');
 
 Route::get('/guia-estilos', [GuiaEstilosController::class, 'index'])->name('guia-estilos.index');
 
@@ -38,4 +38,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-Route::post('/proyectos', [ProyectosController::class, 'store'])->name('proyectos.store');
+Route::post('/proyectos', [ProyectosController::class, 'store'])->middleware('auth')->name('proyectos.store');
+Route::post('/proyectos/{proyecto}/colaboradores', [ProyectosController::class, 'agregarColaborador'])
+    ->middleware('auth')
+    ->name('proyectos.colaboradores.store');
