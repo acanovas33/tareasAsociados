@@ -21,11 +21,13 @@ Route::get('/proyectos', [ProyectosController::class, 'index'])->middleware('aut
 
 Route::get('/guia-estilos', [GuiaEstilosController::class, 'index'])->name('guia-estilos.index');
 
-Route::get('/perfil/editar', [PerfilController::class, 'edit'])->name('perfil.edit');
+Route::get('/perfil/editar', [PerfilController::class, 'edit'])->middleware('auth')->name('perfil.edit');
 
-Route::put('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
+Route::put('/perfil', [PerfilController::class, 'update'])->middleware('auth')->name('perfil.update');
 
-Route::put('/perfil/contrasena', [PerfilController::class, 'updatePassword'])->name('perfil.password.update');
+Route::put('/perfil/contrasena', [PerfilController::class, 'updatePassword'])
+    ->middleware('auth')
+    ->name('perfil.password.update');
 
 Route::get('/registro', [RegistroController::class, 'create'])->name('registro.create');
 Route::post('/registro', [RegistroController::class, 'store'])->name('registro.store');

@@ -19,7 +19,7 @@
 
             <div class="tarjeta-cuerpo p-6 sm:p-8">
 
-                <a href="{{ url()->previous() }}" class="mb-6 inline-block text-sm font-semibold text-slate-600 hover:text-slate-900">
+                <a href="{{ route('proyectos.index') }}" class="mb-6 inline-block text-sm font-semibold text-slate-600 hover:text-slate-900">
                     ← Volver
                 </a>
 
