@@ -165,6 +165,14 @@
     @if ($errors->has('nombre'))
         abrirPopup();
     @endif
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const avisoColaborador = document.getElementById('avisoColaborador');
+
+        if (avisoColaborador) {
+            window.setTimeout(() => avisoColaborador.remove(), 5000);
+        }
+    });
 </script>
 
 
@@ -172,6 +180,13 @@
 
             </div>
         </div>
+
+        @if (session('status'))
+            <div id="avisoColaborador" class="tarjeta" role="status" aria-live="polite">
+                <div class="tarjeta-franja"></div>
+                <div class="tarjeta-cuerpo font-semibold text-texto">{{ session('status') }}</div>
+            </div>
+        @endif
 
 @if ($proyectosUsuario->isNotEmpty())
 
@@ -196,6 +211,46 @@
                     <p class="texto-suave mt-2">
                         Proyecto en el que colaboras.
                     </p>
+
+                    @if ((int) $usuarioProyecto->id_rol === 1)
+                        @php($erroresColaborador = $errors->getBag('colaborador-'.$usuarioProyecto->id_proyecto))
+
+                        <details class="mt-4" @if ($erroresColaborador->any()) open @endif>
+                            <summary class="cursor-pointer font-semibold text-destacado">
+                                Añadir colaborador
+                            </summary>
+
+                            <form
+                                action="{{ route('proyectos.colaboradores.store', $usuarioProyecto->proyecto) }}"
+                                method="POST"
+                                class="mt-4 space-y-4"
+                            >
+                                @csrf
+
+                                <div>
+                                    <label for="correo-colaborador-{{ $usuarioProyecto->id_proyecto }}" class="etiqueta">
+                                        Correo electrónico
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="correo-colaborador-{{ $usuarioProyecto->id_proyecto }}"
+                                        name="correo"
+                                        value="{{ $erroresColaborador->any() ? old('correo') : '' }}"
+                                        autocomplete="email"
+                                        required
+                                        class="campo"
+                                    >
+                                    @if ($erroresColaborador->has('correo'))
+                                        <p class="campo-error">{{ $erroresColaborador->first('correo') }}</p>
+                                    @endif
+                                </div>
+
+                                <button type="submit" class="boton-secundario w-full">
+                                    Añadir colaborador
+                                </button>
+                            </form>
+                        </details>
+                    @endif
 
                 </div>
 

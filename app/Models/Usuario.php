@@ -11,6 +11,11 @@ class Usuario extends Authenticatable
     protected $table = 'usuario';
     public $timestamps = false;
 
+    public function getAuthPassword(): string
+    {
+        return (string) $this->contrasena;
+    }
+
     public function tareas(): BelongsToMany
     {
         return $this->belongsToMany(
