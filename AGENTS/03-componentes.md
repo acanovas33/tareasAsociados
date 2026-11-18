@@ -40,6 +40,8 @@ Referencia viva: `resources/views/proyectos.blade.php`. `[PENDENT]` extraer un l
 | `.campo` | `<input>` de texto, correo, contraseña… | Foco naranja |
 | `.campo-error` | Mensaje de error de campo (rojo) | |
 | `.boton-principal` | Botón naranja de acción | Añadir `w-full` o `w-full sm:w-auto` |
+| `.boton-secundario` | Botón blanco de apoyo (cancelar, volver) | Junto a `.boton-principal` |
+| `.modal` | `<dialog>` de pop-up con una `.tarjeta` dentro | Se abre con `resources/js/modal.js` |
 | `.codigo` | Nombre de clase o código dentro de un texto | Solo guía de estilos y documentación en pantalla |
 | `.progreso` + `.progreso-barra` | Barra de progreso | Ancho de la barra con `style="width: N%"` (valor dinámico) |
 
@@ -141,6 +143,20 @@ Aún no hay componente propio (`[PENDENT]`, ver `08`). Mientras tanto, patrón p
 <p class="text-sm font-semibold text-alerta">⚠ Tarea bloqueada: falta aprobar el diseño.</p>
 ```
 Siempre con texto o icono además del color.
+
+## Pop-up (modal) y componente «Crear tarea»
+JS mínimo en `resources/js/modal.js` (ya cargado por `app.js`): un botón con `data-abrir-modal="id"` abre el `<dialog id="id" class="modal">`; `data-cerrar-modal` lo cierra; también Esc y clic en el fondo. Un `<dialog data-abrir-al-cargar>` se abre solo al cargar la página (para mostrar de nuevo un formulario con errores). **Las vistas que usen pop-ups deben cargar el JS:** `@vite(['resources/css/app.css', 'resources/js/app.js'])`.
+
+El pop-up de crear tarea es un componente Blade (`resources/views/components/modal-crear-tarea.blade.php`):
+```blade
+<button type="button" class="boton-principal" data-abrir-modal="modal-crear-tarea">Nueva tarea</button>
+
+<x-modal-crear-tarea :proyecto="$proyecto->id"
+    :estados="$estados"   {{-- [id => nombre], p. ej. Estado::pluck('nombre', 'id')->all() --}}
+    :usuarios="$usuarios" {{-- [id => nombre], miembros del proyecto --}} />
+```
+Envía `POST /proyectos/{proyecto}/tareas` (`tareas.store`, `TareaController@store`) con `nombre`, `descripcion`, `id_estado`, `fecha_limite` e `id_usuario`; valida con el *error bag* `crearTarea` (mensajes en castellano) y vuelve a la página con `success`. La página que lo incluya puede mostrar `session('success')`. Ejemplo vivo en `/guia-estilos`.
+Columnas de `tarea` **provisionales** (`nombre`, `descripcion`, `fecha_limite`, `id_proyecto`, `id_estado`) y pendiente comprobar permisos (ver `08`).
 
 ## Cómo añadir un componente nuevo
 1. Escribe la clase en `resources/css/devsprint.css`, dentro de `@layer components`, con `@apply` y **solo tokens del manual** (más `slate` para neutros).

@@ -25,6 +25,9 @@ Registro vivo. Una decisión resuelta pasa a «Decisiones tomadas» con fecha y 
 - `[PENDENT]` **Modo oscuro:** no definido; no implementar hasta decidirlo.
 
 ### Producto y técnica
+- `[PENDENT]` **Esquema de la tabla `tarea`** (y `estado`, `usuario_asignado`): el pop-up de crear tarea asume `tarea(id, nombre, descripcion, fecha_limite, id_proyecto, id_estado)`, `estado(id, nombre)` y `usuario_asignado(id_tarea, id_usuario)`. Confirmar con Arnaldo/Albert y ajustar `TareaController@store`, el componente y `tests/Feature/TareasTest.php`. Tipo de tarea (requisito 5) aún no existe en los modelos.
+- `[PENDENT]` **Permisos al crear tareas:** comprobar que quien crea es miembro del proyecto y que un colaborador solo se asigna a sí mismo (el administrador, a cualquiera). Depende del login con sesión.
+- `[PENDENT]` **Mensajes de validación en castellano** para todo el proyecto (hoy solo los de `TareaController@store`): añadir `lang/es` y `APP_LOCALE=es`.
 - `[PENDENT]` Base de datos de producción (hoy SQLite en local; el reto habla de SQL Server/MySQL) y modelo relacional (Albert/Arnaldo).
 - `[PENDENT]` Autenticación: sesiones de Laravel (web) frente a tokens (API). El enunciado pide sesión mediante la API.
 - `[PENDENT]` Frontend de la pantalla Kanban: JavaScript sin framework (DOM y eventos, según 0612) frente a otro; el Site menciona Vue sin fijarlo.
