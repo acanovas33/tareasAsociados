@@ -44,3 +44,9 @@ Route::post('/proyectos', [ProyectosController::class, 'store'])->middleware('au
 Route::post('/proyectos/{proyecto}/colaboradores', [ProyectosController::class, 'agregarColaborador'])
     ->middleware('auth')
     ->name('proyectos.colaboradores.store');
+Route::delete('/proyectos/{proyecto}', [ProyectosController::class, 'eliminar'])
+    ->middleware('auth')
+    ->name('proyectos.destroy');
+Route::delete('/proyectos/{proyecto}/salir', [ProyectosController::class, 'salir'])
+    ->middleware('auth')
+    ->name('proyectos.salir');
