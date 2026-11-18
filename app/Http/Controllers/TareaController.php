@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tarea;
 use App\Models\Proyecto;
+use App\Models\Tarea;
 use App\Models\Estado;
 use App\Models\Usuario;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TareaController extends Controller
@@ -22,7 +23,11 @@ class TareaController extends Controller
             ->groupBy('id_estado');
 
 
-        return view ('tareasProyecto', compact('proyecto', 'tareas', 'estados'));
+        // Datos del pop-up «Crear tarea»: [id => nombre] de los estados y de los miembros del proyecto
+        $estadosPopup = $estados->pluck('nombre', 'id')->all();
+        $usuariosPopup = $proyecto->usuarios()->orderBy('usuario.nombre')->pluck('usuario.nombre', 'usuario.id')->all();
+
+        return view ('tareasProyecto', compact('proyecto', 'tareas', 'estados', 'estadosPopup', 'usuariosPopup'));
     }
     /**
      * Show the form for creating a new resource.
@@ -33,11 +38,49 @@ class TareaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Crea una tarea en el proyecto desde el pop-up «Crear tarea».
+     *
+     * Columnas de la tabla `tarea` que usa: nombre, descripcion, fecha_inicio, fecha_limite, id_proyecto
+     * e id_estado; la asignación va en `usuario_asignado` (`fecha_inicio` y `usuario_asignado` las lee ya
+     * la vista de tareas del proyecto; el resto de columnas está pendiente de confirmar con el modelo de BD).
+     * Pendiente: comprobar que el usuario con sesión es miembro del proyecto y, si no es administrador,
+     * que solo pueda asignarse la tarea a sí mismo.
      */
-    public function store(Request $request)
+    public function store(Request $request, Proyecto $proyecto): RedirectResponse
     {
-        //
+        $datos = $request->validateWithBag('crearTarea', [
+            'nombre' => ['required', 'string', 'max:255'],
+            'descripcion' => ['nullable', 'string', 'max:1000'],
+            'id_estado' => ['required', 'integer', 'exists:estado,id'],
+            'fecha_inicio' => ['nullable', 'date'],
+            'fecha_limite' => ['nullable', 'date', 'after_or_equal:fecha_inicio'],
+            'id_usuario' => ['nullable', 'integer', 'exists:usuario,id'],
+        ], [
+            'nombre.required' => 'El título de la tarea es obligatorio.',
+            'nombre.max' => 'El título no puede superar los 255 caracteres.',
+            'descripcion.max' => 'La descripción no puede superar los 1000 caracteres.',
+            'id_estado.required' => 'Elige un estado.',
+            'id_estado.exists' => 'El estado elegido no existe.',
+            'fecha_inicio.date' => 'La fecha de inicio no es una fecha válida.',
+            'fecha_limite.date' => 'La fecha límite no es una fecha válida.',
+            'fecha_limite.after_or_equal' => 'La fecha límite no puede ser anterior a la de inicio.',
+            'id_usuario.exists' => 'La persona elegida no existe.',
+        ]);
+
+        $tarea = new Tarea;
+        $tarea->nombre = $datos['nombre'];
+        $tarea->descripcion = $datos['descripcion'] ?? null;
+        $tarea->fecha_inicio = $datos['fecha_inicio'] ?? null;
+        $tarea->fecha_limite = $datos['fecha_limite'] ?? null;
+        $tarea->id_estado = $datos['id_estado'];
+        $tarea->id_proyecto = $proyecto->id;
+        $tarea->save();
+
+        if (! empty($datos['id_usuario'])) {
+            $tarea->usuarios()->attach($datos['id_usuario']);
+        }
+
+        return back()->with('success', 'Tarea creada correctamente.');
     }
 
     /**
