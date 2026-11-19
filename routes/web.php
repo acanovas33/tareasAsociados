@@ -31,7 +31,9 @@ Route::get('/registro', [RegistroController::class, 'create'])->name('registro.c
 Route::post('/registro', [RegistroController::class, 'store'])->name('registro.store');
 Route::get('/registrocorrecto', [RegistroController::class, 'correcto'])->name('registrocorrecto');
 
-Route::get('/tareas/{proyecto}', [TareaController::class, 'index'])->name('tareas.index');
+
+Route::put('/tareas/{tarea}/estado', [TareaController::class, 'cambiarEstado'])->name('tareas.estado');
+Route::get('/proyectos/{proyecto}', [TareaController::class, 'index'])->name('tareas.proyecto');
 
 Route::get('/login', [LoginController::class, 'mostrarLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
