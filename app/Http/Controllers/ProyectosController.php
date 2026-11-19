@@ -14,28 +14,37 @@ use Illuminate\Support\Facades\Validator;
 
 class ProyectosController extends Controller
 {
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-        ]);
+public function store(Request $request): RedirectResponse
+{
+    $request->validate([
+        'nombre' => 'required|string|max:255',
+    ]);
 
-        DB::transaction(function () use ($request) {
+    try {
 
-            $proyecto = Proyecto::create([
-                'nombre' => $request->nombre,
-            ]);
+        DB::beginTransaction();
 
-            UsuarioProyectoRol::create([
-                'id_usuario' => Auth::id(),
-                'id_proyecto' => $proyecto->id,
-                'id_rol' => 1,
-            ]);
+        $proyecto = new Proyecto();
+        $proyecto->nombre = $request->nombre;
+        $proyecto->save();
 
-        });
+        $usuarioProyectoRol = new UsuarioProyectoRol();
+        $usuarioProyectoRol->id_usuario = Auth::id();
+        $usuarioProyectoRol->id_proyecto = $proyecto->id;
+        $usuarioProyectoRol->id_rol = 1;
+        $usuarioProyectoRol->save();
+
+        DB::commit();
+
+        return redirect()->back();
+
+    } catch (\Exception $e) {
+
+        DB::rollBack();
 
         return redirect()->back();
     }
+}
 
     public function agregarColaborador(Request $request, Proyecto $proyecto): RedirectResponse
     {
