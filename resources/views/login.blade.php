@@ -1,250 +1,120 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DevSprint - Login</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #eeeeef;
-            font-family: 'Inter', sans-serif;
-            padding: 20px;
-            color: #151d30;
-        }
-
-        .contenedor {
-            width: 100%;
-            max-width: 450px;
-        }
-
-        .login {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
-        }
-
-        .linea {
-            height: 7px;
-            background: #ff693d;
-        }
-
-        .contenido {
-            padding: 45px 38px;
-        }
-
-        .logo {
-            text-align: center;
-            color: #ff693d;
-            font-size: 25px;
-            font-weight: 800;
-            margin-bottom: 65px;
-        }
-
-        .bienvenida {
-            color: #ff693d;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-        }
-
-        h1 {
-            font-size: 29px;
-            margin-bottom: 12px;
-        }
-
-        .descripcion {
-            color: #718096;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 32px;
-        }
-
-        .campo {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 9px;
-            color: #344054;
-        }
-
-        input {
-            width: 100%;
-            height: 49px;
-            padding: 0 14px;
-            border: 1px solid #cbd5e1;
-            border-radius: 11px;
-            outline: none;
-            font-size: 15px;
-        }
-
-        input:focus {
-            border-color: #ff693d;
-            box-shadow: 0 0 0 3px rgba(255,105,61,0.12);
-        }
-
-        .errores {
-            color: #dc2626;
-            font-size: 13px;
-            margin-bottom: 15px;
-        }
-
-        .exito {
-            background: #dcfce7;
-            color: #166534;
-            padding: 12px;
-            border-radius: 9px;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        .boton {
-            width: 100%;
-            height: 52px;
-            background: #ff693d;
-            border: none;
-            border-radius: 11px;
-            color: white;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.2s;
-        }
-
-        .boton:hover {
-            background: #ed572e;
-            transform: translateY(-2px);
-        }
-
-        .registro {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 13px;
-            color: #718096;
-        }
-
-        .registro a {
-            color: #ff693d;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        .registro a:hover {
-            text-decoration: underline;
-        }
-
-        .pie {
-            text-align: center;
-            color: #7b8493;
-            font-size: 12px;
-            margin-top: 20px;
-        }
-
-        @media (max-width: 480px) {
-            .contenido {
-                padding: 35px 25px;
-            }
-        }
-    </style>
+    @vite('resources/css/app.css')
 </head>
 
-<body>
+<body class="relative flex min-h-screen items-center justify-center overflow-x-hidden bg-[#1E293B] bg-[url('/images/imagenFondoRegistro.png')] bg-cover bg-center bg-no-repeat p-4 font-sans text-[#334155] sm:p-6">
 
-    <div class="contenedor">
+    <div class="absolute inset-0 bg-[#0F172A]/65 backdrop-blur-[2px]"></div>
 
-        <div class="login">
+    <main class="relative w-full max-w-md">
 
-            <div class="linea"></div>
+        <div class="overflow-hidden rounded-2xl border border-white/60 bg-white/95 shadow-[0_24px_70px_rgba(15,23,42,0.3)] backdrop-blur-sm">
 
-            <div class="contenido">
+            <div class="h-1.5 bg-gradient-to-r from-[#FF6A3B] via-[#FF8A5B] to-[#FFB088]"></div>
 
-                <div class="logo">➤ DevSprint</div>
+            <div class="p-6 sm:p-9">
 
-                <p class="bienvenida">BIENVENIDO DE NUEVO</p>
+                <div class="mb-7 flex justify-center">
+                    <div>
+                        <img src="{{ asset('images/logoPrincipal.png') }}"
+                             alt="Logo de mi aplicación"
+                             class="block h-auto w-[190px] max-w-full">
+                    </div>
+                </div>
 
-                <h1>Iniciar sesión</h1>
+                <div class="mb-7">
+                    <p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#FF6A3B]">
+                        Bienvenido de nuevo
+                    </p>
 
-                <p class="descripcion">
-                    Accede a tu cuenta y continúa organizando tus tareas de forma sencilla y eficiente.
-                </p>
+                    <h1 class="text-3xl font-bold tracking-tight text-[#0F172A]">
+                        Iniciar sesión
+                    </h1>
+
+                    <p class="mt-2 text-sm leading-6 text-[#64748B]">
+                        Accede a tu cuenta y continúa organizando tus tareas de forma sencilla y eficiente.
+                    </p>
+                </div>
 
                 @if(session('success'))
-                    <div class="exito">
+                    <div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
                         {{ session('success') }}
                     </div>
                 @endif
 
                 @if($errors->any())
-                    <div class="errores">
+                    <div class="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[13px] font-medium text-red-600">
                         {{ $errors->first() }}
                     </div>
                 @endif
 
-                <form action="{{ url('/login') }}" method="POST">
+                <form action="{{ url('/login') }}" method="POST" class="space-y-4">
                     @csrf
 
-                    <div class="campo">
-                        <label for="usuario">Usuario o correo electrónico</label>
+                    <div>
+                        <label for="usuario" class="mb-1.5 block text-sm font-semibold text-[#334155]">
+                            Usuario o correo electrónico
+                        </label>
+
                         <input
                             type="text"
                             id="usuario"
                             name="usuario"
                             value="{{ old('usuario') }}"
                             placeholder="Introduce tu usuario o correo"
+                            autocomplete="username"
                             required
                             autofocus
+                            class="w-full rounded-xl border border-[#CBD5E1] bg-white px-4 py-3 text-[15px] text-[#1F2937] shadow-sm outline-none transition placeholder:text-[#94A3B8] hover:border-[#94A3B8] focus:border-[#FF6A3B] focus:ring-4 focus:ring-[#FF6A3B]/15"
                         >
                     </div>
 
-                    <div class="campo">
-                        <label for="password">Contraseña</label>
+                    <div>
+                        <label for="password" class="mb-1.5 block text-sm font-semibold text-[#334155]">
+                            Contraseña
+                        </label>
+
                         <input
                             type="password"
                             id="password"
                             name="password"
                             placeholder="Introduce tu contraseña"
+                            autocomplete="current-password"
                             required
+                            class="w-full rounded-xl border border-[#CBD5E1] bg-white px-4 py-3 text-[15px] text-[#1F2937] shadow-sm outline-none transition placeholder:text-[#94A3B8] hover:border-[#94A3B8] focus:border-[#FF6A3B] focus:ring-4 focus:ring-[#FF6A3B]/15"
                         >
                     </div>
 
-                    <button type="submit" class="boton">
+                    <button
+                        type="submit"
+                        class="w-full rounded-xl bg-[#FF6A3B] px-4 py-3.5 text-base font-bold text-white shadow-[0_8px_20px_rgba(255,106,59,0.25)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#F45B2D] hover:shadow-[0_12px_24px_rgba(255,106,59,0.3)] focus:outline-none focus:ring-4 focus:ring-[#FF6A3B]/25 active:translate-y-0"
+                    >
                         Iniciar sesión
                     </button>
 
                 </form>
 
-                <div class="registro">
+                <div class="mt-7 text-center text-sm text-[#64748B]">
                     ¿No tienes cuenta?
-                    <a href="{{ url('/registro') }}">Regístrate aquí</a>
+                    <a href="{{ url('/registro') }}"
+                       class="font-bold text-[#FF6A3B] transition hover:text-[#F45B2D] hover:underline">
+                        Regístrate aquí
+                    </a>
                 </div>
 
             </div>
-
         </div>
 
-        <p class="pie">Organiza tu día. Avanza con claridad.</p>
+        <p class="mt-5 text-center text-xs text-white/75">
+            Organiza tu día. Avanza con claridad.
+        </p>
 
-    </div>
+    </main>
 
 </body>
 </html>
