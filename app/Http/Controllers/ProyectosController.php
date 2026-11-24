@@ -87,6 +87,39 @@ class ProyectosController extends Controller
             ->with('status', 'Colaborador añadido correctamente.');
     }
 
+    public function eliminar(Proyecto $proyecto): RedirectResponse
+    {
+        abort_unless(
+            UsuarioProyectoRol::query()
+                ->where('id_usuario', Auth::id())
+                ->where('id_proyecto', $proyecto->id)
+                ->where('id_rol', 1)
+                ->exists(),
+            403
+        );
+
+        $proyecto->delete();
+
+        return redirect()
+            ->route('proyectos.index')
+            ->with('status', 'Proyecto eliminado correctamente.');
+    }
+
+    public function salir(Proyecto $proyecto): RedirectResponse
+    {
+        $filasEliminadas = UsuarioProyectoRol::query()
+            ->where('id_usuario', Auth::id())
+            ->where('id_proyecto', $proyecto->id)
+            ->where('id_rol', 2)
+            ->delete();
+
+        abort_unless($filasEliminadas === 1, 403);
+
+        return redirect()
+            ->route('proyectos.index')
+            ->with('status', 'Has salido del proyecto correctamente.');
+    }
+
     public function index(): View
     {
         $usuario = auth()->user();

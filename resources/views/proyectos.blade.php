@@ -250,6 +250,33 @@
                                 </button>
                             </form>
                         </details>
+                        <form
+                            action="{{ route('proyectos.destroy', $usuarioProyecto->proyecto) }}"
+                            method="POST"
+                            class="mt-4"
+                            onsubmit="return confirm('¿Seguro que quieres eliminar este proyecto? También se eliminarán sus tareas y asignaciones. Esta acción no se puede deshacer.')"
+                        >
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit" class="boton-secundario w-full">
+                                Eliminar proyecto
+                            </button>
+                        </form>
+                    @elseif ((int) $usuarioProyecto->id_rol === 2)
+                        <form
+                            action="{{ route('proyectos.salir', $usuarioProyecto->proyecto) }}"
+                            method="POST"
+                            class="mt-4"
+                            onsubmit="return confirm('¿Seguro que quieres salir de este proyecto?')"
+                        >
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit" class="boton-secundario w-full">
+                                Salir del proyecto
+                            </button>
+                        </form>
                     @endif
 
                 </div>
