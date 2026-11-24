@@ -28,7 +28,8 @@
     {{-- Cabecera --}}
     <header class="flex items-center justify-between bg-slate-900 px-8 py-4 shadow-md">
         <div class="flex items-center gap-4">
-            <h1 class="text-3xl italic text-white">Dev<strong class="font-extrabold text-orange-500">Sprint</strong></h1>
+            <img src="{{ asset('images/logoPrincipal.png') }}" alt="Logo de DevSprint"
+                class="block h-auto w-[150px] max-w-full">
             <span class="rounded-full bg-slate-700 px-4 py-1 text-sm font-semibold text-slate-100">
                 {{ $proyecto->nombre }}
             </span>
