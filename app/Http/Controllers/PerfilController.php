@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class PerfilController extends Controller
 {
@@ -22,7 +22,6 @@ class PerfilController extends Controller
     {
         $usuario = Auth::user();
 
-        // Cuando se integre la autenticación, comprobará que haya sesión.
         abort_unless($usuario, 401);
 
         $datos = $request->validate([
@@ -31,11 +30,9 @@ class PerfilController extends Controller
             'email' => [
                 'required',
                 'email',
-                'max:255',
+                'max:150',
                 Rule::unique('usuario', 'correo')->ignore($usuario->id),
             ],
-
-            'current_password' => ['required', 'current_password'],
         ]);
 
         $usuario->nombre = $datos['name'];
@@ -44,5 +41,22 @@ class PerfilController extends Controller
         $usuario->save();
 
         return back()->with('success', 'Perfil actualizado correctamente.');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $usuario = Auth::user();
+
+        abort_unless($usuario, 401);
+
+        $datos = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $usuario->contrasena = Hash::make($datos['password']);
+        $usuario->save();
+
+        return back()->with('success', 'Contraseña actualizada correctamente.');
     }
 }

@@ -18,6 +18,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $proyecto->nombre }} - DevSprint</title>
     {{-- Tailwind y sistema de diseño por Vite (el CDN de Tailwind pisaba los estilos de devsprint.css) --}}
     @fonts
@@ -29,7 +30,8 @@
     {{-- Cabecera --}}
     <header class="flex items-center justify-between bg-slate-900 px-8 py-4 shadow-md">
         <div class="flex items-center gap-4">
-            <h1 class="text-3xl italic text-white">Dev<strong class="font-extrabold text-orange-500">Sprint</strong></h1>
+            <img src="{{ asset('images/logoPrincipal.png') }}" alt="Logo de DevSprint"
+                class="block h-auto w-[150px] max-w-full">
             <span class="rounded-full bg-slate-700 px-4 py-1 text-sm font-semibold text-slate-100">
                 {{ $proyecto->nombre }}
             </span>
@@ -55,9 +57,10 @@
                 $tareasColumna = $tareas[$estado->id] ?? [];
             @endphp
 
-            <section class="min-w-0 flex-1">
+            <section class="columna min-w-0 flex-1" data-estado="{{ $estado->id }}">
                 {{-- Título de la columna con el número de tareas y una línea de color debajo --}}
-                <h2 class="mb-4 flex items-center justify-between border-b-4 {{ $c['linea'] }} px-1 pb-2 text-lg font-bold">
+                <h2
+                    class="mb-4 flex items-center justify-between border-b-4 {{ $c['linea'] }} px-1 pb-2 text-lg font-bold">
                     {{ $estado->nombre }}
                     <span class="rounded-full px-3 py-0.5 text-sm {{ $c['contador'] }}">
                         {{ count($tareasColumna) }}
@@ -65,8 +68,8 @@
                 </h2>
 
                 @foreach ($tareasColumna as $tarea)
-                    <div class="mb-4 break-words rounded-2xl {{ $c['tarjeta'] }} p-4 shadow-sm hover:shadow-md">
-                        {{-- Título --}}
+                    <div class="tarea mb-4 cursor-grab break-words rounded-2xl {{ $c['tarjeta'] }} p-4 shadow-sm hover:shadow-md"
+                        draggable="true" data-id="{{ $tarea->id }}"> {{-- Título --}}
                         <p class="text-base font-bold text-slate-900">{{ $tarea->nombre }}</p>
 
                         {{-- Descripción --}}
@@ -79,7 +82,8 @@
                             <div class="mt-3 flex flex-wrap items-center gap-1">
                                 <span class="text-xs text-slate-700">Asignado a:</span>
                                 @foreach ($tarea->usuarios as $usuario)
-                                    <span class="rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-slate-700">
+                                    <span
+                                        class="rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-slate-700">
                                         {{ $usuario->nombre }}
                                     </span>
                                 @endforeach
@@ -87,7 +91,8 @@
                         @endif
 
                         {{-- Fechas --}}
-                        <div class="mt-3 flex justify-between gap-2 border-t border-black/20 pt-2 text-xs text-slate-700">
+                        <div
+                            class="mt-3 flex justify-between gap-2 border-t border-black/20 pt-2 text-xs text-slate-700">
                             <span>
                                 Inicio:
                                 <strong class="text-slate-900">
@@ -106,7 +111,8 @@
 
                 {{-- Mensaje si la columna no tiene tareas --}}
                 @if (count($tareasColumna) == 0)
-                    <p class="rounded-xl border-2 border-dashed border-slate-300 p-4 text-center text-sm text-slate-400">
+                    <p
+                        class="rounded-xl border-2 border-dashed border-slate-300 p-4 text-center text-sm text-slate-400">
                         No hay tareas
                     </p>
                 @endif
@@ -116,6 +122,53 @@
 
     {{-- Pop-up «Crear tarea» (componente x-modal-crear-tarea, ver AGENTS/03-componentes.md) --}}
     <x-modal-crear-tarea :proyecto="$proyecto->id" :estados="$estadosPopup" :usuarios="$usuariosPopup" />
+
+    <script>
+        // Arrastrar tareas entre columnas para cambiar su estado
+        let tareaArrastrada = null;
+
+document.querySelectorAll('.tarea').forEach(tarea => {
+    tarea.addEventListener('dragstart', (e) => {
+        tareaArrastrada = tarea;
+
+        // Se atenúa la original DESPUÉS de que el navegador haya copiado la imagen que se ve al arrastrar
+        setTimeout(() => tarea.classList.add('opacity-40'), 0);
+    });
+
+    tarea.addEventListener('dragend', () => {
+        tarea.classList.remove('opacity-40');
+    });
+});
+// Columnas donde se puede soltar
+document.querySelectorAll('.columna').forEach(columna => {
+    // Necesario para permitir el "drop"
+    columna.addEventListener('dragover', (e) => e.preventDefault());
+
+    columna.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        if (!tareaArrastrada) return;
+
+        const idTarea = tareaArrastrada.dataset.id;
+        const idEstado = columna.dataset.estado;
+
+        const respuesta = await fetch(`/tareas/${idTarea}/estado`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            },
+            body: JSON.stringify({ id_estado: idEstado }),
+        });
+
+        if (respuesta.ok) {
+            // Recarga para que cambien colores, contadores y la columna
+            location.reload();
+        } else {
+            alert('No se pudo mover la tarea');
+        }
+    });
+});
+    </script>
 </body>
 
 </html>

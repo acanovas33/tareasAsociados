@@ -108,9 +108,9 @@
         @apply rounded-xl bg-principal px-6 py-3.5 text-base font-bold text-white shadow-[0_8px_20px_rgba(255,106,59,0.25)] transition duration-200 hover:-translate-y-0.5 hover:bg-principal-oscuro hover:shadow-[0_12px_24px_rgba(255,106,59,0.3)] focus:outline-none focus:ring-4 focus:ring-principal/25 active:translate-y-0;
     }
 
-    /* Botón secundario (cancelar, volver): junto a .boton-principal */
+    /* Botón secundario para acciones dentro de una tarjeta */
     .boton-secundario {
-        @apply rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-base font-bold text-slate-700 transition duration-200 hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-300/50;
+        @apply inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-destacado transition hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-principal/15 active:bg-slate-100;
     }
 
     /* Pop-up: <dialog class="modal"> con una .tarjeta dentro. Se abre con modal.js */

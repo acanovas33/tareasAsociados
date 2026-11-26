@@ -153,7 +153,7 @@ test('la fecha límite no puede ser anterior a la de inicio', function () {
 });
 
 test('la página de tareas del proyecto incluye el pop-up para crear tareas', function () {
-    $this->get(route('tareas.index', 1))
+    $this->get(route('tareas.proyecto', 1))
         ->assertOk()
         ->assertSee('data-abrir-modal="modal-crear-tarea"', false)
         ->assertSee('id="modal-crear-tarea"', false)
@@ -162,10 +162,10 @@ test('la página de tareas del proyecto incluye el pop-up para crear tareas', fu
 });
 
 test('tras crear una tarea desde la página del proyecto se vuelve a ella con el aviso y la tarea en su columna', function () {
-    $this->from(route('tareas.index', 1))
+    $this->from(route('tareas.proyecto', 1))
         ->post(route('tareas.store', 1), ['nombre' => 'Tarea desde el pop-up', 'id_estado' => 2, 'id_usuario' => 1])
-        ->assertRedirect(route('tareas.index', 1))
+        ->assertRedirect(route('tareas.proyecto', 1))
         ->assertSessionHas('success');
 
-    $this->get(route('tareas.index', 1))->assertSee('Tarea desde el pop-up')->assertSee('Persona de prueba');
+    $this->get(route('tareas.proyecto', 1))->assertSee('Tarea desde el pop-up')->assertSee('Persona de prueba');
 });

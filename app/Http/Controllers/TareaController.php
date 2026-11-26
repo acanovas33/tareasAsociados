@@ -29,6 +29,18 @@ class TareaController extends Controller
 
         return view ('tareasProyecto', compact('proyecto', 'tareas', 'estados', 'estadosPopup', 'usuariosPopup'));
     }
+
+    public function cambiarEstado(Request $request, Tarea $tarea)
+{
+    $request->validate([
+        'id_estado' => 'required|exists:estado,id',
+    ]);
+
+    $tarea->id_estado = $request->id_estado;
+    $tarea->save();
+
+    return response()->json(['ok' => true]);
+}
     /**
      * Show the form for creating a new resource.
      */
