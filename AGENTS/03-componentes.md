@@ -144,6 +144,14 @@ Aún no hay componente propio (`[PENDENT]`, ver `08`). Mientras tanto, patrón p
 ```
 Siempre con texto o icono además del color.
 
+## Componente «Editar proyecto»
+Pop-up para cambiar el nombre de un proyecto (`resources/views/components/modal-editar-proyecto.blade.php`). Usa el mismo modal que «Crear tarea» (sección siguiente), así que la vista tiene que cargar `resources/js/app.js`.
+```blade
+<button type="button" class="boton-secundario w-full" data-abrir-modal="modal-editar-proyecto-{{ $proyecto->id }}">Editar proyecto</button>
+<x-modal-editar-proyecto :proyecto="$proyecto" />
+```
+Envía `PUT /proyectos/{proyecto}` (`proyectos.update`, `ProyectosController@actualizar`). **Solo puede hacerlo quien administra el proyecto** (`id_rol` 1); al resto le da 403. Valida con el *error bag* `editarProyecto-{id}`, así que con errores se vuelve a abrir solo el pop-up de ese proyecto. Vuelve a `/proyectos` con `status`. En `proyectos.blade.php` el botón solo sale en las tarjetas de los proyectos que administras.
+
 ## Pop-up (modal) y componente «Crear tarea»
 JS mínimo en `resources/js/modal.js` (ya cargado por `app.js`): un botón con `data-abrir-modal="id"` abre el `<dialog id="id" class="modal">`; `data-cerrar-modal` lo cierra; también Esc y clic en el fondo. Un `<dialog data-abrir-al-cargar>` se abre solo al cargar la página (para mostrar de nuevo un formulario con errores). **Las vistas que usen pop-ups deben cargar el JS:** `@vite(['resources/css/app.css', 'resources/js/app.js'])`.
 

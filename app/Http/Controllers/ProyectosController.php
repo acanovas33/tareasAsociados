@@ -87,6 +87,34 @@ class ProyectosController extends Controller
             ->with('status', 'Colaborador añadido correctamente.');
     }
 
+    /**
+     * Cambia el nombre del proyecto (pop-up «Editar proyecto»). Solo puede hacerlo quien lo administra.
+     */
+    public function actualizar(Request $request, Proyecto $proyecto): RedirectResponse
+    {
+        abort_unless(
+            UsuarioProyectoRol::query()
+                ->where('id_usuario', Auth::id())
+                ->where('id_proyecto', $proyecto->id)
+                ->where('id_rol', 1)
+                ->exists(),
+            403
+        );
+
+        $datos = $request->validateWithBag('editarProyecto-'.$proyecto->id, [
+            'nombre' => ['required', 'string', 'max:255'],
+        ], [
+            'nombre.required' => 'El nombre del proyecto es obligatorio.',
+            'nombre.max' => 'El nombre del proyecto no puede superar :max caracteres.',
+        ]);
+
+        $proyecto->update(['nombre' => $datos['nombre']]);
+
+        return redirect()
+            ->route('proyectos.index')
+            ->with('status', 'Proyecto actualizado correctamente.');
+    }
+
     public function eliminar(Proyecto $proyecto): RedirectResponse
     {
         abort_unless(
