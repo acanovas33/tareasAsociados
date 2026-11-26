@@ -17,10 +17,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $proyecto->nombre }} - DevSprint</title>
-    {{-- Tailwind por CDN: no necesita Vite ni npm --}}
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- Tailwind y sistema de diseño por Vite (el CDN de Tailwind pisaba los estilos de devsprint.css) --}}
+    @fonts
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="min-h-screen bg-slate-100 font-sans text-slate-800">
@@ -35,11 +37,17 @@
             </span>
         </div>
 
-        <button id="open-modal" type="button"
+        <button type="button" data-abrir-modal="modal-crear-tarea"
             class="rounded-full bg-orange-500 px-5 py-2 text-sm font-semibold text-white hover:bg-orange-600">
             + Nueva tarea
         </button>
     </header>
+
+    @if (session('success'))
+        <p role="status" class="mx-2 mt-4 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-800 shadow-sm">
+            {{ session('success') }}
+        </p>
+    @endif
 
     {{-- Tablero --}}
     <main class="flex flex-col items-stretch gap-4 p-4 md:flex-row md:items-start">
@@ -112,39 +120,12 @@
         @endforeach
     </main>
 
-    {{-- Modal crear tarea --}}
-    <div id="modal" class="fixed inset-0 z-10 hidden items-center justify-center bg-black/50">
-        <form method="POST" action="#" class="w-[min(400px,90%)] rounded-2xl bg-white p-6 shadow-xl">
-            @csrf
-            <h3 class="mb-4 text-lg font-bold">Nueva tarea</h3>
-            <input type="text" name="titulo" placeholder="Título de la tarea" required
-                class="w-full rounded-xl border-2 border-slate-300 px-3 py-2 text-base focus:border-orange-500 focus:outline-none">
-            <div class="mt-4 flex justify-end gap-2">
-                <button type="button" id="close-modal"
-                    class="rounded-full bg-slate-200 px-5 py-2 font-semibold hover:bg-slate-300">Cancelar</button>
-                <button type="submit"
-                    class="rounded-full bg-orange-500 px-5 py-2 font-semibold text-white hover:bg-orange-600">Crear</button>
-            </div>
-        </form>
-    </div>
+    {{-- Pop-up «Crear tarea» (componente x-modal-crear-tarea, ver AGENTS/03-componentes.md) --}}
+    <x-modal-crear-tarea :proyecto="$proyecto->id" :estados="$estadosPopup" :usuarios="$usuariosPopup" />
 
     <script>
-        const modal = document.getElementById('modal');
-        const openBtn = document.getElementById('open-modal');
-        const toggle = (open) => {
-            modal.classList.toggle('hidden', !open);
-            modal.classList.toggle('flex', open);
-            if (open) modal.querySelector('input').focus();
-        };
-        if (openBtn) openBtn.onclick = () => toggle(true);
-        document.getElementById('close-modal').onclick = () => toggle(false);
-        modal.onclick = (e) => {
-            if (e.target === modal) toggle(false);
-        };
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') toggle(false);
-        });
-  let tareaArrastrada = null;
+        // Arrastrar tareas entre columnas para cambiar su estado
+        let tareaArrastrada = null;
 
 document.querySelectorAll('.tarea').forEach(tarea => {
     tarea.addEventListener('dragstart', (e) => {

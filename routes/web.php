@@ -41,7 +41,6 @@ Route::get('/login', [LoginController::class, 'mostrarLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
 Route::post('/proyectos', [ProyectosController::class, 'store'])->middleware('auth')->name('proyectos.store');
 Route::post('/proyectos/{proyecto}/colaboradores', [ProyectosController::class, 'agregarColaborador'])
     ->middleware('auth')
@@ -52,3 +51,4 @@ Route::delete('/proyectos/{proyecto}', [ProyectosController::class, 'eliminar'])
 Route::delete('/proyectos/{proyecto}/salir', [ProyectosController::class, 'salir'])
     ->middleware('auth')
     ->name('proyectos.salir');
+Route::post('/proyectos/{proyecto}/tareas', [TareaController::class, 'store'])->name('tareas.store');
