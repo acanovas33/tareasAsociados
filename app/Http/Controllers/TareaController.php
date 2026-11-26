@@ -127,11 +127,17 @@ class TareaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina la tarea desde el pop-up de confirmación «Eliminar tarea».
+     *
+     * Primero quita sus asignaciones (usuario_asignado) para no dejar filas sueltas.
+     * Pendiente (igual que al crear y editar): comprobar que quien elimina es miembro del proyecto.
      */
-    public function destroy(Tarea $tarea)
+    public function destroy(Tarea $tarea): RedirectResponse
     {
-        //
+        $tarea->usuarios()->detach();
+        $tarea->delete();
+
+        return back()->with('success', 'Tarea eliminada correctamente.');
     }
 
     /**

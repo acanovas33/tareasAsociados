@@ -148,6 +148,12 @@
                     <button type="button" class="boton-secundario w-full sm:w-auto">Cancelar</button>
                 </div>
                 <p class="texto-suave mt-4"><span class="codigo">.boton-secundario</span> junto al principal (cancelar, volver)</p>
+
+                <h3 class="mt-8 text-sm font-bold text-slate-900">Botón de peligro</h3>
+                <div class="mt-3">
+                    <button type="button" class="boton-peligro w-full sm:w-auto">Eliminar tarea</button>
+                </div>
+                <p class="texto-suave mt-4"><span class="codigo">.boton-peligro</span> solo para acciones que borran algo, dentro de un pop-up de confirmación</p>
             </div>
         </section>
 

@@ -116,8 +116,9 @@
                         </div>
                     </div>
 
-                    {{-- Pop-up «Editar tarea» de esta tarea (componente x-modal-editar-tarea) --}}
+                    {{-- Pop-ups «Editar tarea» y su confirmación «Eliminar tarea» (componentes) --}}
                     <x-modal-editar-tarea :tarea="$tarea" :estados="$estadosPopup" :usuarios="$usuariosPopup" />
+                    <x-modal-eliminar-tarea :tarea="$tarea" />
                 @endforeach
 
                 {{-- Mensaje si la columna no tiene tareas --}}

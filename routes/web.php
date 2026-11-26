@@ -53,3 +53,4 @@ Route::delete('/proyectos/{proyecto}/salir', [ProyectosController::class, 'salir
     ->name('proyectos.salir');
 Route::post('/proyectos/{proyecto}/tareas', [TareaController::class, 'store'])->name('tareas.store');
 Route::put('/tareas/{tarea}', [TareaController::class, 'update'])->name('tareas.update');
+Route::delete('/tareas/{tarea}', [TareaController::class, 'destroy'])->name('tareas.destroy');
