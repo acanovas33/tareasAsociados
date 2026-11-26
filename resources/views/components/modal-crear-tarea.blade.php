@@ -7,6 +7,8 @@
 --}}
 @php
     $errores = isset($errors) ? $errors->getBag('crearTarea') : new \Illuminate\Support\MessageBag;
+    // Lo escrito (old) solo se recupera si los errores son de este pop-up, no del de editar una tarea
+    $valor = fn (string $campo, $porDefecto = null) => $errores->any() ? old($campo, $porDefecto) : $porDefecto;
 @endphp
 <dialog id="modal-crear-tarea" class="modal" aria-labelledby="modal-crear-tarea-titulo" @if ($errores->any()) data-abrir-al-cargar @endif>
     <div class="tarjeta">
@@ -22,13 +24,13 @@
 
             <div>
                 <label for="tarea-nombre" class="etiqueta">Título</label>
-                <input type="text" id="tarea-nombre" name="nombre" value="{{ old('nombre') }}" maxlength="255" required class="campo">
+                <input type="text" id="tarea-nombre" name="nombre" value="{{ $valor('nombre') }}" maxlength="255" required class="campo">
                 @if ($errores->has('nombre')) <div class="campo-error">{{ $errores->first('nombre') }}</div> @endif
             </div>
 
             <div>
                 <label for="tarea-descripcion" class="etiqueta">Descripción</label>
-                <textarea id="tarea-descripcion" name="descripcion" rows="3" maxlength="1000" class="campo">{{ old('descripcion') }}</textarea>
+                <textarea id="tarea-descripcion" name="descripcion" rows="3" maxlength="1000" class="campo">{{ $valor('descripcion') }}</textarea>
                 @if ($errores->has('descripcion')) <div class="campo-error">{{ $errores->first('descripcion') }}</div> @endif
             </div>
 
@@ -37,7 +39,7 @@
                     <label for="tarea-estado" class="etiqueta">Estado</label>
                     <select id="tarea-estado" name="id_estado" required class="campo">
                         @foreach ($estados as $idEstado => $nombreEstado)
-                            <option value="{{ $idEstado }}" @selected((string) old('id_estado', array_key_first($estados)) === (string) $idEstado)>{{ $nombreEstado }}</option>
+                            <option value="{{ $idEstado }}" @selected((string) $valor('id_estado', array_key_first($estados)) === (string) $idEstado)>{{ $nombreEstado }}</option>
                         @endforeach
                     </select>
                     @if ($errores->has('id_estado')) <div class="campo-error">{{ $errores->first('id_estado') }}</div> @endif
@@ -48,7 +50,7 @@
                     <select id="tarea-usuario" name="id_usuario" class="campo">
                         <option value="">Sin asignar</option>
                         @foreach ($usuarios as $idUsuario => $nombreUsuario)
-                            <option value="{{ $idUsuario }}" @selected((string) old('id_usuario') === (string) $idUsuario)>{{ $nombreUsuario }}</option>
+                            <option value="{{ $idUsuario }}" @selected((string) $valor('id_usuario') === (string) $idUsuario)>{{ $nombreUsuario }}</option>
                         @endforeach
                     </select>
                     @if ($errores->has('id_usuario')) <div class="campo-error">{{ $errores->first('id_usuario') }}</div> @endif
@@ -56,13 +58,13 @@
 
                 <div>
                     <label for="tarea-fecha-inicio" class="etiqueta">Fecha de inicio</label>
-                    <input type="date" id="tarea-fecha-inicio" name="fecha_inicio" value="{{ old('fecha_inicio') }}" class="campo font-mono">
+                    <input type="date" id="tarea-fecha-inicio" name="fecha_inicio" value="{{ $valor('fecha_inicio') }}" class="campo font-mono">
                     @if ($errores->has('fecha_inicio')) <div class="campo-error">{{ $errores->first('fecha_inicio') }}</div> @endif
                 </div>
 
                 <div>
                     <label for="tarea-fecha-limite" class="etiqueta">Fecha límite</label>
-                    <input type="date" id="tarea-fecha-limite" name="fecha_limite" value="{{ old('fecha_limite') }}" class="campo font-mono">
+                    <input type="date" id="tarea-fecha-limite" name="fecha_limite" value="{{ $valor('fecha_limite') }}" class="campo font-mono">
                     @if ($errores->has('fecha_limite')) <div class="campo-error">{{ $errores->first('fecha_limite') }}</div> @endif
                 </div>
             </div>

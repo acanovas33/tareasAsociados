@@ -69,8 +69,16 @@
 
                 @foreach ($tareasColumna as $tarea)
                     <div class="tarea mb-4 cursor-grab break-words rounded-2xl {{ $c['tarjeta'] }} p-4 shadow-sm hover:shadow-md"
-                        draggable="true" data-id="{{ $tarea->id }}"> {{-- Título --}}
-                        <p class="text-base font-bold text-slate-900">{{ $tarea->nombre }}</p>
+                        draggable="true" data-id="{{ $tarea->id }}">
+                        {{-- Título y botón para abrir el pop-up «Editar tarea» --}}
+                        <div class="flex items-start justify-between gap-2">
+                            <p class="text-base font-bold text-slate-900">{{ $tarea->nombre }}</p>
+                            <button type="button" data-abrir-modal="modal-editar-tarea-{{ $tarea->id }}"
+                                aria-label="Editar la tarea {{ $tarea->nombre }}"
+                                class="shrink-0 rounded-full bg-white/70 px-3 py-1 text-xs font-semibold text-slate-800 hover:bg-white">
+                                Editar
+                            </button>
+                        </div>
 
                         {{-- Descripción --}}
                         @if ($tarea->descripcion)
@@ -107,6 +115,9 @@
                             </span>
                         </div>
                     </div>
+
+                    {{-- Pop-up «Editar tarea» de esta tarea (componente x-modal-editar-tarea) --}}
+                    <x-modal-editar-tarea :tarea="$tarea" :estados="$estadosPopup" :usuarios="$usuariosPopup" />
                 @endforeach
 
                 {{-- Mensaje si la columna no tiene tareas --}}

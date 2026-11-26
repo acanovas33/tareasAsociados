@@ -158,6 +158,16 @@ El pop-up de crear tarea es un componente Blade (`resources/views/components/mod
 Envía `POST /proyectos/{proyecto}/tareas` (`tareas.store`, `TareaController@store`) con `nombre`, `descripcion`, `id_estado`, `fecha_inicio`, `fecha_limite` e `id_usuario`; valida con el *error bag* `crearTarea` (mensajes en castellano) y vuelve a la página con `success`. La página que lo incluya puede mostrar `session('success')`. Ejemplo vivo en `/guia-estilos`.
 Ya está integrado en `tareasProyecto.blade.php` (botón en la cabecera; `TareaController@index` le pasa `$estadosPopup` y `$usuariosPopup`). **Esa vista carga Tailwind y el sistema de diseño solo por Vite (`@fonts` + `@vite`): no añadas el CDN de Tailwind, su reseteo pisa las clases de `devsprint.css`.** Columnas de `tarea` por confirmar y pendiente comprobar permisos (ver `08`).
 
+### Componente «Editar tarea»
+Uno por tarea (`resources/views/components/modal-editar-tarea.blade.php`), con los datos actuales ya rellenos. En el tablero, cada tarjeta tiene un botón «Editar»:
+```blade
+<button type="button" data-abrir-modal="modal-editar-tarea-{{ $tarea->id }}">Editar</button>
+
+<x-modal-editar-tarea :tarea="$tarea" {{-- con ->usuarios cargados --}}
+    :estados="$estados" :usuarios="$usuarios" {{-- [id => nombre], igual que al crear --}} />
+```
+Envía `PUT /tareas/{tarea}` (`tareas.update`, `TareaController@update`) con los mismos campos que al crear, salvo que las personas van en `usuarios[]` (casillas: se pueden asignar varias). Se guardan con `sync()`: quedan asignadas exactamente las marcadas. Valida con las mismas reglas que crear (métodos `reglasTarea()` y `mensajesTarea()` del controlador) en el *error bag* `editarTarea`; el campo oculto `tarea_editada` indica qué pop-up hay que reabrir si hay errores. Lo escrito (`old`) solo se recupera en el pop-up que dio el error.
+
 ## Cómo añadir un componente nuevo
 1. Escribe la clase en `resources/css/devsprint.css`, dentro de `@layer components`, con `@apply` y **solo tokens del manual** (más `slate` para neutros).
 2. Nombre en castellano, en minúsculas y con guiones (`.insignia-estado`, `.menu-lateral`).

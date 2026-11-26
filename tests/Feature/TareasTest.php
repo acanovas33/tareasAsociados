@@ -169,3 +169,123 @@ test('tras crear una tarea desde la página del proyecto se vuelve a ella con el
 
     $this->get(route('tareas.proyecto', 1))->assertSee('Tarea desde el pop-up')->assertSee('Persona de prueba');
 });
+
+/**
+ * Pop-up «Editar tarea»
+ */
+function crearTareaDePrueba(array $datos = []): int
+{
+    return DB::table('tarea')->insertGetId($datos + [
+        'nombre' => 'Tarea original',
+        'descripcion' => 'Descripción original',
+        'fecha_inicio' => '2026-11-20',
+        'fecha_limite' => '2026-11-27',
+        'id_proyecto' => 1,
+        'id_estado' => 1,
+    ]);
+}
+
+test('se editan los datos de una tarea desde el pop-up', function () {
+    $idTarea = crearTareaDePrueba();
+
+    $this->put(route('tareas.update', $idTarea), [
+        'tarea_editada' => $idTarea,
+        'nombre' => 'Tarea renombrada',
+        'descripcion' => '',
+        'id_estado' => 2,
+        'fecha_inicio' => '2026-11-21',
+        'fecha_limite' => '2026-11-30',
+    ])->assertRedirect()->assertSessionHas('success', 'Tarea actualizada correctamente.');
+
+    $this->assertDatabaseHas('tarea', [
+        'id' => $idTarea,
+        'nombre' => 'Tarea renombrada',
+        'descripcion' => null,
+        'id_estado' => 2,
+        'fecha_inicio' => '2026-11-21',
+        'fecha_limite' => '2026-11-30',
+        'id_proyecto' => 1,
+    ]);
+});
+
+test('al editar se asignan varias personas y se quitan las que se desmarcan', function () {
+    DB::table('usuario')->insert(['id' => 2, 'nombre' => 'Segunda persona', 'correo' => 'segunda@devsprint.test', 'contrasena' => 'hash']);
+    DB::table('usuario')->insert(['id' => 3, 'nombre' => 'Tercera persona', 'correo' => 'tercera@devsprint.test', 'contrasena' => 'hash']);
+    $idTarea = crearTareaDePrueba();
+    DB::table('usuario_asignado')->insert(['id_tarea' => $idTarea, 'id_usuario' => 3]);
+
+    $this->put(route('tareas.update', $idTarea), ['nombre' => 'Tarea', 'id_estado' => 1, 'usuarios' => [1, 2]])
+        ->assertSessionHas('success');
+
+    $this->assertDatabaseHas('usuario_asignado', ['id_tarea' => $idTarea, 'id_usuario' => 1]);
+    $this->assertDatabaseHas('usuario_asignado', ['id_tarea' => $idTarea, 'id_usuario' => 2]);
+    $this->assertDatabaseMissing('usuario_asignado', ['id_tarea' => $idTarea, 'id_usuario' => 3]);
+
+    // Sin ninguna casilla marcada, la tarea se queda sin asignar
+    $this->put(route('tareas.update', $idTarea), ['nombre' => 'Tarea', 'id_estado' => 1]);
+    $this->assertDatabaseCount('usuario_asignado', 0);
+});
+
+test('al editar se valida igual que al crear y no se cambia nada si hay errores', function () {
+    $idTarea = crearTareaDePrueba();
+
+    $this->put(route('tareas.update', $idTarea), [
+        'nombre' => '',
+        'id_estado' => 99,
+        'fecha_inicio' => '2026-11-27',
+        'fecha_limite' => '2026-11-20',
+        'usuarios' => [99],
+    ])->assertSessionHasErrorsIn('editarTarea', [
+        'nombre' => 'El título de la tarea es obligatorio.',
+        'id_estado',
+        'fecha_limite',
+        'usuarios.0',
+    ]);
+
+    $this->assertDatabaseHas('tarea', ['id' => $idTarea, 'nombre' => 'Tarea original', 'id_estado' => 1]);
+});
+
+test('editar una tarea que no existe devuelve 404', function () {
+    $this->put(route('tareas.update', 99), ['nombre' => 'Tarea', 'id_estado' => 1])->assertNotFound();
+});
+
+test('cada tarea del tablero tiene su pop-up de edición con los datos actuales', function () {
+    $idTarea = crearTareaDePrueba();
+    DB::table('usuario_asignado')->insert(['id_tarea' => $idTarea, 'id_usuario' => 1]);
+
+    $this->get(route('tareas.proyecto', 1))
+        ->assertOk()
+        ->assertSee('data-abrir-modal="modal-editar-tarea-'.$idTarea.'"', false)
+        ->assertSee('id="modal-editar-tarea-'.$idTarea.'"', false)
+        ->assertSee('value="Tarea original"', false)
+        ->assertSee('value="2026-11-20"', false)
+        ->assertSee('name="usuarios[]" value="1" class="h-4 w-4 accent-principal" checked', false);
+});
+
+test('si la edición tiene errores, al volver solo se reabre el pop-up de esa tarea', function () {
+    $idTarea = crearTareaDePrueba();
+    $otraTarea = crearTareaDePrueba(['nombre' => 'Otra tarea']);
+
+    $this->from(route('tareas.proyecto', 1))
+        ->put(route('tareas.update', $idTarea), ['tarea_editada' => $idTarea, 'nombre' => '', 'id_estado' => 1])
+        ->assertRedirect(route('tareas.proyecto', 1));
+
+    $pagina = $this->get(route('tareas.proyecto', 1))->assertOk()->getContent();
+
+    // <dialog id="modal-editar-tarea-N" ... data-abrir-al-cargar>: el que se abre solo al cargar
+    $abierto = fn (int $id) => '/<dialog id="modal-editar-tarea-'.$id.'"[^>]*data-abrir-al-cargar/';
+
+    expect($pagina)->toMatch($abierto($idTarea));
+    expect($pagina)->not->toMatch($abierto($otraTarea));
+    expect($pagina)->toContain('El título de la tarea es obligatorio.');
+});
+
+test('lo escrito al editar no aparece en el pop-up de crear tarea', function () {
+    $idTarea = crearTareaDePrueba();
+
+    $this->from(route('tareas.proyecto', 1))
+        ->put(route('tareas.update', $idTarea), ['tarea_editada' => $idTarea, 'nombre' => 'Texto escrito al editar', 'id_estado' => 99]);
+
+    $this->get(route('tareas.proyecto', 1))
+        ->assertSee('id="tarea-nombre" name="nombre" value=""', false);
+});
