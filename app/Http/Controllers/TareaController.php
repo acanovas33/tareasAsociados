@@ -60,22 +60,9 @@ class TareaController extends Controller
      */
     public function store(Request $request, Proyecto $proyecto): RedirectResponse
     {
-        $datos = $request->validateWithBag('crearTarea', [
-            'nombre' => ['required', 'string', 'max:255'],
-            'descripcion' => ['nullable', 'string', 'max:1000'],
-            'id_estado' => ['required', 'integer', 'exists:estado,id'],
-            'fecha_inicio' => ['nullable', 'date'],
-            'fecha_limite' => ['nullable', 'date', 'after_or_equal:fecha_inicio'],
+        $datos = $request->validateWithBag('crearTarea', $this->reglasTarea() + [
             'id_usuario' => ['nullable', 'integer', 'exists:usuario,id'],
-        ], [
-            'nombre.required' => 'El título de la tarea es obligatorio.',
-            'nombre.max' => 'El título no puede superar los 255 caracteres.',
-            'descripcion.max' => 'La descripción no puede superar los 1000 caracteres.',
-            'id_estado.required' => 'Elige un estado.',
-            'id_estado.exists' => 'El estado elegido no existe.',
-            'fecha_inicio.date' => 'La fecha de inicio no es una fecha válida.',
-            'fecha_limite.date' => 'La fecha límite no es una fecha válida.',
-            'fecha_limite.after_or_equal' => 'La fecha límite no puede ser anterior a la de inicio.',
+        ], $this->mensajesTarea() + [
             'id_usuario.exists' => 'La persona elegida no existe.',
         ]);
 
@@ -112,11 +99,31 @@ class TareaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Guarda los cambios del pop-up «Editar tarea»: título, descripción, estado, fechas y personas asignadas.
+     *
+     * Las personas se guardan con sync(): quedan asignadas exactamente las marcadas (las demás se quitan).
+     * Si hay errores, el campo oculto `tarea_editada` sirve para volver a abrir el pop-up de esta tarea.
+     * Pendiente (igual que al crear): comprobar que quien edita es miembro del proyecto.
      */
-    public function update(Request $request, Tarea $tarea)
+    public function update(Request $request, Tarea $tarea): RedirectResponse
     {
-        //
+        $datos = $request->validateWithBag('editarTarea', $this->reglasTarea() + [
+            'usuarios' => ['nullable', 'array'],
+            'usuarios.*' => ['integer', 'exists:usuario,id'],
+        ], $this->mensajesTarea() + [
+            'usuarios.*.exists' => 'Alguna de las personas elegidas no existe.',
+        ]);
+
+        $tarea->nombre = $datos['nombre'];
+        $tarea->descripcion = $datos['descripcion'] ?? null;
+        $tarea->fecha_inicio = $datos['fecha_inicio'] ?? null;
+        $tarea->fecha_limite = $datos['fecha_limite'] ?? null;
+        $tarea->id_estado = $datos['id_estado'];
+        $tarea->save();
+
+        $tarea->usuarios()->sync($datos['usuarios'] ?? []);
+
+        return back()->with('success', 'Tarea actualizada correctamente.');
     }
 
     /**
@@ -125,5 +132,40 @@ class TareaController extends Controller
     public function destroy(Tarea $tarea)
     {
         //
+    }
+
+    /**
+     * Reglas comunes a crear y editar una tarea.
+     *
+     * @return array<string, array<int, string>>
+     */
+    private function reglasTarea(): array
+    {
+        return [
+            'nombre' => ['required', 'string', 'max:255'],
+            'descripcion' => ['nullable', 'string', 'max:1000'],
+            'id_estado' => ['required', 'integer', 'exists:estado,id'],
+            'fecha_inicio' => ['nullable', 'date'],
+            'fecha_limite' => ['nullable', 'date', 'after_or_equal:fecha_inicio'],
+        ];
+    }
+
+    /**
+     * Mensajes de error en castellano comunes a crear y editar una tarea.
+     *
+     * @return array<string, string>
+     */
+    private function mensajesTarea(): array
+    {
+        return [
+            'nombre.required' => 'El título de la tarea es obligatorio.',
+            'nombre.max' => 'El título no puede superar los 255 caracteres.',
+            'descripcion.max' => 'La descripción no puede superar los 1000 caracteres.',
+            'id_estado.required' => 'Elige un estado.',
+            'id_estado.exists' => 'El estado elegido no existe.',
+            'fecha_inicio.date' => 'La fecha de inicio no es una fecha válida.',
+            'fecha_limite.date' => 'La fecha límite no es una fecha válida.',
+            'fecha_limite.after_or_equal' => 'La fecha límite no puede ser anterior a la de inicio.',
+        ];
     }
 }

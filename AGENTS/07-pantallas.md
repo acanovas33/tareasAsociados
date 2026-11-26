@@ -9,8 +9,9 @@ Inventario de vistas de la aplicación, su estado y de dónde sale cada diseño.
 | Inicio: lista de proyectos | `/proyectos` (`proyectos.index`) | `proyectos.blade.php` · `ProyectosController@index` | Óscar | `projectlist` | Hecha con datos de ejemplo; usa `devsprint.css` |
 | Guía de estilos (interna, solo local) | `/guia-estilos` (`guia-estilos.index`) | `guia-estilos.blade.php` · `GuiaEstilosController@index` | Óscar | `guia-estilos` | Hecha; muestra todos los componentes de `devsprint.css` |
 | Pop-up «Crear tarea» (componente) | `POST /proyectos/{proyecto}/tareas` (`tareas.store`) | `components/modal-crear-tarea.blade.php` · `TareaController@store` | Óscar | `popup-crear-tarea` | Hecho e integrado en `/proyectos/{proyecto}` (botón «+ Nueva tarea» en la cabecera); columnas de `tarea` por confirmar |
+| Pop-up «Editar tarea» (componente) | `PUT /tareas/{tarea}` (`tareas.update`) | `components/modal-editar-tarea.blade.php` · `TareaController@update` | Óscar | `popup-editar-tarea` | Hecho: botón «Editar» en cada tarjeta del tablero; título, descripción, estado, fechas y varias personas asignadas |
 | Crear proyecto | `[PENDENT]` | — | — | — | El botón «Nuevo proyecto» aún no enlaza a nada |
-| Proyecto con tareas (tablero por estado) | `/proyectos/{proyecto}` (`tareas.proyecto`) · `PUT /tareas/{tarea}/estado` (`tareas.estado`) | `tareasProyecto.blade.php` · `TareaController@index` | Albert | `main` | Tablero con arrastrar y soltar entre columnas + pop-up «Crear tarea» |
+| Proyecto con tareas (tablero por estado) | `/proyectos/{proyecto}` (`tareas.proyecto`) · `PUT /tareas/{tarea}/estado` (`tareas.estado`) | `tareasProyecto.blade.php` · `TareaController@index` | Albert | `main` | Tablero con arrastrar y soltar entre columnas + pop-ups «Crear tarea» y «Editar tarea» |
 
 ## Wireframes del manual
 - **Login** — [`referencias/wireframe-login.png`](referencias/wireframe-login.png): logo arriba a la izquierda; mensaje «Benvinguda a la Web!»; campos Correu y Contrasenya; botones «sign up» y «Login».

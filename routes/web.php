@@ -52,3 +52,4 @@ Route::delete('/proyectos/{proyecto}/salir', [ProyectosController::class, 'salir
     ->middleware('auth')
     ->name('proyectos.salir');
 Route::post('/proyectos/{proyecto}/tareas', [TareaController::class, 'store'])->name('tareas.store');
+Route::put('/tareas/{tarea}', [TareaController::class, 'update'])->name('tareas.update');
