@@ -289,3 +289,49 @@ test('lo escrito al editar no aparece en el pop-up de crear tarea', function () 
     $this->get(route('tareas.proyecto', 1))
         ->assertSee('id="tarea-nombre" name="nombre" value=""', false);
 });
+
+/**
+ * Pop-up «Eliminar tarea»
+ */
+test('se elimina una tarea con sus asignaciones', function () {
+    $idTarea = crearTareaDePrueba();
+    $otraTarea = crearTareaDePrueba(['nombre' => 'Otra tarea']);
+    DB::table('usuario_asignado')->insert([
+        ['id_tarea' => $idTarea, 'id_usuario' => 1],
+        ['id_tarea' => $otraTarea, 'id_usuario' => 1],
+    ]);
+
+    $this->from(route('tareas.proyecto', 1))
+        ->delete(route('tareas.destroy', $idTarea))
+        ->assertRedirect(route('tareas.proyecto', 1))
+        ->assertSessionHas('success', 'Tarea eliminada correctamente.');
+
+    $this->assertDatabaseMissing('tarea', ['id' => $idTarea]);
+    $this->assertDatabaseMissing('usuario_asignado', ['id_tarea' => $idTarea]);
+    $this->assertDatabaseHas('tarea', ['id' => $otraTarea]);
+    $this->assertDatabaseHas('usuario_asignado', ['id_tarea' => $otraTarea, 'id_usuario' => 1]);
+});
+
+test('eliminar una tarea que no existe devuelve 404', function () {
+    $this->delete(route('tareas.destroy', 99))->assertNotFound();
+});
+
+test('la tarea solo se elimina por DELETE, no con un enlace', function () {
+    $idTarea = crearTareaDePrueba();
+
+    $this->get('/tareas/'.$idTarea)->assertStatus(405);
+
+    $this->assertDatabaseHas('tarea', ['id' => $idTarea]);
+});
+
+test('el pop-up de editar lleva al de confirmar la eliminación de esa tarea', function () {
+    $idTarea = crearTareaDePrueba();
+
+    $this->get(route('tareas.proyecto', 1))
+        ->assertOk()
+        ->assertSee('data-abrir-modal="modal-eliminar-tarea-'.$idTarea.'"', false)
+        ->assertSee('id="modal-eliminar-tarea-'.$idTarea.'"', false)
+        ->assertSee('action="'.route('tareas.destroy', $idTarea).'"', false)
+        ->assertSee('name="_method" value="DELETE"', false)
+        ->assertSee('¿Eliminar «Tarea original»?');
+});

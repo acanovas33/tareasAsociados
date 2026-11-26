@@ -41,6 +41,7 @@ Referencia viva: `resources/views/proyectos.blade.php`. `[PENDENT]` extraer un l
 | `.campo-error` | Mensaje de error de campo (rojo) | |
 | `.boton-principal` | Botón naranja de acción | Añadir `w-full` o `w-full sm:w-auto` |
 | `.boton-secundario` | Botón blanco de apoyo (cancelar, volver) | Junto a `.boton-principal` |
+| `.boton-peligro` | Botón rojo (`alerta`) para acciones que borran | Solo dentro de un pop-up de confirmación, con texto claro («Eliminar tarea») |
 | `.modal` | `<dialog>` de pop-up con una `.tarjeta` dentro | Se abre con `resources/js/modal.js` |
 | `.codigo` | Nombre de clase o código dentro de un texto | Solo guía de estilos y documentación en pantalla |
 | `.progreso` + `.progreso-barra` | Barra de progreso | Ancho de la barra con `style="width: N%"` (valor dinámico) |
@@ -167,6 +168,13 @@ Uno por tarea (`resources/views/components/modal-editar-tarea.blade.php`), con l
     :estados="$estados" :usuarios="$usuarios" {{-- [id => nombre], igual que al crear --}} />
 ```
 Envía `PUT /tareas/{tarea}` (`tareas.update`, `TareaController@update`) con los mismos campos que al crear, salvo que las personas van en `usuarios[]` (casillas: se pueden asignar varias). Se guardan con `sync()`: quedan asignadas exactamente las marcadas. Valida con las mismas reglas que crear (métodos `reglasTarea()` y `mensajesTarea()` del controlador) en el *error bag* `editarTarea`; el campo oculto `tarea_editada` indica qué pop-up hay que reabrir si hay errores. Lo escrito (`old`) solo se recupera en el pop-up que dio el error.
+
+### Componente «Eliminar tarea» (confirmación)
+`resources/views/components/modal-eliminar-tarea.blade.php`, uno por tarea. Se abre desde el botón «Eliminar tarea» del pop-up de editar (`data-abrir-modal="modal-eliminar-tarea-{id}"`), **encima** de él: `<dialog>` permite apilar pop-ups y Esc o «Cancelar» cierran solo el de arriba.
+```blade
+<x-modal-eliminar-tarea :tarea="$tarea" />
+```
+Envía `DELETE /tareas/{tarea}` (`tareas.destroy`, `TareaController@destroy`): quita las asignaciones (`detach()`), borra la tarea y vuelve con `success`. Usa `.boton-peligro`.
 
 ## Cómo añadir un componente nuevo
 1. Escribe la clase en `resources/css/devsprint.css`, dentro de `@layer components`, con `@apply` y **solo tokens del manual** (más `slate` para neutros).

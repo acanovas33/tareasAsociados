@@ -84,9 +84,14 @@
                 @if ($conErrores && $errores->has('usuarios.*')) <div class="campo-error">{{ $errores->first('usuarios.*') }}</div> @endif
             </fieldset>
 
-            <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
-                <button type="button" class="boton-secundario" data-cerrar-modal>Cancelar</button>
-                <button type="submit" class="boton-principal">Guardar cambios</button>
+            {{-- Eliminar a la izquierda; Cancelar y Guardar juntos a la derecha (bajan de fila si no caben) --}}
+            <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:flex-wrap sm:items-center">
+                {{-- Abre el pop-up de confirmación (x-modal-eliminar-tarea) encima de este --}}
+                <button type="button" class="boton-secundario whitespace-nowrap text-alerta" data-abrir-modal="modal-eliminar-tarea-{{ $tarea->id }}">Eliminar tarea</button>
+                <div class="flex flex-col-reverse gap-3 sm:ml-auto sm:flex-row">
+                    <button type="button" class="boton-secundario whitespace-nowrap" data-cerrar-modal>Cancelar</button>
+                    <button type="submit" class="boton-principal whitespace-nowrap">Guardar cambios</button>
+                </div>
             </div>
         </form>
     </div>

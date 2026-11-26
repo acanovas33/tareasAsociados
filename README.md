@@ -93,7 +93,7 @@ Las tablas están creadas directamente en SQL Server y los modelos de Eloquent l
 | `/registro` | Crear cuenta |
 | `/login` | Iniciar sesión |
 | `/proyectos` | Mis proyectos (y crear uno nuevo) |
-| `/proyectos/{proyecto}` | Tareas del proyecto por estado (arrastrar para cambiar de estado; crear y editar tareas con pop-ups) |
+| `/proyectos/{proyecto}` | Tareas del proyecto por estado (arrastrar para cambiar de estado; crear, editar y eliminar tareas con pop-ups) |
 | `/perfil/editar` | Editar el perfil |
 | `/guia-estilos` | Componentes del diseño (solo en local) |
 
