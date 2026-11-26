@@ -16,12 +16,12 @@ El reparto y el estado de cada tarea se llevan en Airtable, por sprints de dos s
 
 ## Qué incluye
 - **Usuarios:** registro, inicio y cierre de sesión, edición del perfil y de la contraseña.
-- **Proyectos:** lista de los proyectos del usuario, con su rol, y creación de proyectos nuevos.
+- **Proyectos:** lista de los proyectos del usuario, con su rol, creación de proyectos nuevos y pop-up para cambiarles el nombre (solo quien los administra).
 - **Tareas:** página de cada proyecto con las tareas agrupadas por estado, con responsables y fechas de inicio y de fin, y pop-up para crear tareas nuevas.
 - **Sistema de diseño propio** (`resources/css/devsprint.css`): colores, tipografías y componentes del manual de identidad corporativa, con una página de muestra en `/guia-estilos` (solo en local).
 - **Interfaz responsive**, para escritorio y móvil.
 
-Lo que falta por hacer: editar y eliminar proyectos, tipos de tarea, editar y eliminar tareas, tablero Kanban con arrastrar y soltar, API para el cliente JavaScript, y roles y permisos completos.
+Lo que falta por hacer: tipos de tarea, editar y eliminar tareas, tablero Kanban con arrastrar y soltar, API para el cliente JavaScript, y roles y permisos completos.
 
 ## Tecnologías
 | Capa | Herramientas |

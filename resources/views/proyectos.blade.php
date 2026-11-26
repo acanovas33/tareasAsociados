@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mis proyectos</title>
     @fonts
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="app-fondo">
@@ -196,6 +196,12 @@
 
                             @if ((int) $usuarioProyecto->id_rol === 1)
                                 @php($erroresColaborador = $errors->getBag('colaborador-' . $usuarioProyecto->id_proyecto))
+
+                                <button type="button" class="boton-secundario mt-4 w-full"
+                                    data-abrir-modal="modal-editar-proyecto-{{ $usuarioProyecto->id_proyecto }}">
+                                    Editar proyecto
+                                </button>
+                                <x-modal-editar-proyecto :proyecto="$usuarioProyecto->proyecto" />
 
                                 <details class="mt-4" @if ($erroresColaborador->any()) open @endif>
                                     <summary class="cursor-pointer font-semibold text-destacado">
